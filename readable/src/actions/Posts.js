@@ -30,5 +30,5 @@ export function getAllPosts(posts) {
 export function fetchAllPosts() {
 	PostsAPI.getAllPosts()
 		.then((response) => response.json())
-		.then((posts) => dispatch(getAllPosts(posts)));
+		.then((posts) => this.props.dispatch(getAllPosts(posts)));
 };

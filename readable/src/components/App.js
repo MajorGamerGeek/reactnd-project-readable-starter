@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getAllPosts } from '../actions/Posts';
+import { fetchAllPosts } from '../actions/Posts';
 import '../App.css';
 
 class App extends Component {
   componentDidMount() {
-    console.log('props', this.props);
+    this.props.fetchAllPosts();
+    console.log('props', this.props);    
   };
 
   render() {
@@ -30,7 +31,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    getPosts: (data) => dispatch(getAllPosts(data))
+    getPosts: () => dispatch(fetchAllPosts())
   };
 }
 
