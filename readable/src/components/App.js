@@ -25,13 +25,12 @@ class App extends Component {
 
 function mapStateToProps(state) {
   return {
-    posts: state.posts
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getPosts: () => dispatch(fetchAllPosts())
+    fetchAllPosts: () => dispatch(fetchAllPosts())
   };
 }
 

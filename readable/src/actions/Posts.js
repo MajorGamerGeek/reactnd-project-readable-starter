@@ -19,8 +19,6 @@ export function getCategoryPost({ category }) {
 };
 
 export function getAllPosts(posts) {
-	console.log('Inside getAllPosts!');
-	console.log(posts);
 	return {
 		type: GET_ALL_POSTS,
 		posts
@@ -28,7 +26,9 @@ export function getAllPosts(posts) {
 };
 
 export function fetchAllPosts() {
-	PostsAPI.getAllPosts()
-		.then((response) => response.json())
-		.then((posts) => this.props.dispatch(getAllPosts(posts)));
+	return function(dispatch) {
+			PostsAPI.getAllPosts()
+					.then((response) => response.json())
+					.then((posts) => dispatch(getAllPosts(posts)));        
+	}
 };
