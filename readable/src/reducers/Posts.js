@@ -9,8 +9,8 @@ function posts(state = {}, action) {
 
 	switch (action.type) {
 		case GET_ALL_POSTS:
-			posts = {};
-			
+			posts = action.posts;
+
 			return {
 				...state,
 				posts

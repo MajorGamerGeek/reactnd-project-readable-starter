@@ -18,8 +18,17 @@ export function getCategoryPost({ category }) {
 	}
 };
 
-export function getAllPosts() {
+export function getAllPosts(posts) {
+	console.log('Inside getAllPosts!');
+	console.log(posts);
 	return {
-		type: GET_ALL_POSTS
+		type: GET_ALL_POSTS,
+		posts
 	}
+};
+
+export function fetchAllPosts() {
+	PostsAPI.getAllPosts()
+		.then((response) => response.json())
+		.then((posts) => dispatch(getAllPosts(posts)));
 };
