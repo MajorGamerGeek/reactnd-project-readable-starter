@@ -6,5 +6,11 @@ const headers = {
   'Authorization': 'readable-mmg'
 }
 
+export const getCategories = () =>
+  fetch(`${api}/categories`, { headers });
+
 export const getAllPosts = () =>
   fetch(`${api}/posts`, { headers });
+
+export const getPostComments = (postId) =>
+  fetch(`${api}/posts/${postId}/comments`, { headers });

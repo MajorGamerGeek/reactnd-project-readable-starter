@@ -1,4 +1,4 @@
-import * as PostsAPI from '../utils/Api';
+import * as API from '../utils/Api';
 
 export const GET_POST = 'GET_POST';
 export const GET_CATEGORY_POSTS = 'GET_CATEGORY_POSTS';
@@ -26,9 +26,9 @@ export function getAllPosts(posts) {
 };
 
 export function fetchAllPosts() {
-	return function(dispatch) {
-			PostsAPI.getAllPosts()
-					.then((response) => response.json())
-					.then((posts) => dispatch(getAllPosts(posts)));        
+	return function (dispatch) {
+		API.getAllPosts()
+			.then((response) => response.json())
+			.then((posts) => dispatch(getAllPosts(posts)));
 	}
 };

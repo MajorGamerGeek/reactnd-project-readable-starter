@@ -1,3 +1,5 @@
+import * as API from '../utils/Api';
+
 export const GET_COMMENT = 'GET_COMMENT';
 export const GET_POST_COMMENTS = 'GET_POST_COMMENTS ';
 
@@ -8,9 +10,17 @@ export function getComment({ id }) {
 	}
 };
 
-export function getPostComments({ parentId }) {
+export function getPostComments({ postComments }) {
 	return {
 		type: GET_POST_COMMENTS,
-		parentId
+		postComments
 	}
 };
+
+export function fetchPostsComments() {
+	return function (dispatch) {
+		API.getPostComments()
+			.then((response) => response.json())
+			.then((postComments) => dispatch(getPostComments(postComments)));
+	}
+}

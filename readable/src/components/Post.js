@@ -12,9 +12,11 @@ class Post extends Component {
     return (
       <li>
         <div className="post">
+          <div className="post-id">{post.id}</div>
           <div className="post-title">{post.title}</div>
           <div className="book-body">{post.body}</div>
           <div className="book-author">Author: {post.author}</div>
+          <div className="book-voteScore">Vote Score: {post.voteScore}</div>
         </div>
       </li>
     )

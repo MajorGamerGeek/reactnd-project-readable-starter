@@ -2,7 +2,7 @@ import {
 	GET_POST,
 	GET_CATEGORY_POSTS,
 	GET_ALL_POSTS
-} from '../actions/Posts'
+} from '../actions/Posts';
 
 function posts(state = [], action) {
 	switch (action.type) {
