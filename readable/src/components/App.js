@@ -27,12 +27,12 @@ class App extends Component {
         <Route exact path="/" render={() => (
           <div>
             <ol className="posts-list">
-              {posts && posts.map(post => (<div><Post key={post.id} post={post} /></div>))}
+              {posts && posts.map(post => (<Post key={post.id} post={post} />))}
             </ol>
           </div>
         )} />
         <Route path="/categories" render={() => (
-          <div>Hello World!</div>
+          <div><h1>Categories: </h1><Categories/></div>
         )} />
       </div>
     );

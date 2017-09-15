@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { fetchCategories } from '../actions/Categories';
 import '../App.css';
 
-class App extends Component {
+class Categories extends Component {
   componentDidMount() {
     this.props.fetchCategories();
 
@@ -12,15 +12,15 @@ class App extends Component {
 
   render() {
     const { categories } = this.props;
-
-    console.log(categories);
-
+    
     return (
       <div className="categories">
-        <div>
-          <ol className="categories-list">
-          </ol>
-        </div>
+        {categories && categories.map(category => (
+          <div key={category.path}>
+            <div className="category-name">{category.name}</div>
+            <div className="category-path">{category.path}</div>
+          </div>
+        ))}
       </div>
     );
   }
@@ -38,4 +38,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(Categories);
