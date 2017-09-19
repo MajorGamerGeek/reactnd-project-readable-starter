@@ -17,6 +17,9 @@ class Post extends Component {
           <div className="book-body">{post.body}</div>
           <div className="book-author">Author: {post.author}</div>
           <div className="book-voteScore">Vote Score: {post.voteScore}</div>
+          <a href="">Vote Up</a>
+          <br/>
+          <a href="">Vote Down</a>
         </div>
       </li>
     )
