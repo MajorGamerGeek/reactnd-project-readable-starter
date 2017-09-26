@@ -1,26 +1,21 @@
+
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Route } from 'react-router-dom';
 import { fetchCategories } from '../actions/Categories';
-import { fetchAllPosts } from '../actions/Posts';
-import Post from './Post';
 import Comment from './Comment';
 import Categories from './Categories';
+import Posts from './Posts';
 import '../App.css';
 
 class App extends Component {
   componentDidMount() {
     this.props.fetchCategories();
-    this.props.fetchAllPosts();
-
-    console.log('props', this.props);
   };
 
   render() {
-    const { categories, posts } = this.props;
+    const { categories } = this.props;
 
-    posts.sort((a, b) => a.voteScore < b.voteScore);
-    
     return (
       <div className="App">
         <div className="App-header">
@@ -34,35 +29,22 @@ class App extends Component {
             ))}
           </div>
         </div>
-        <Route exact path="/" render={() => (
-          <div>
-            <ol className="posts-list">
-              {posts && posts.map(post => (<Post key={post.id} post={post} />))}
-            </ol>
-          </div>
-        )} />
-        {categories.map(category => 
-        <Route path={`/${category.path}#/`} key={category.path} render={() => (
-            <div><h1>Categories: </h1><Categories/></div>
-          )} />
-        )}
-
+        <Route exact path="/" component={Posts} />
+        <Route exact path='/:category' component={Categories} />
       </div>
     );
   }
 };
 
-function mapStateToProps({ categories, posts }) {
+function mapStateToProps({ categories }) {
   return {
-    categories,
-    posts
+    categories
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchCategories: () => dispatch(fetchCategories()),
-    fetchAllPosts: () => dispatch(fetchAllPosts())
+    fetchCategories: () => dispatch(fetchCategories())
   };
 }
 

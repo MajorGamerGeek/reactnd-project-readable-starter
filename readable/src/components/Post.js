@@ -1,7 +1,19 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { incrementPost, decrementPost } from '../actions/Posts';
 
 class Post extends Component {
+  incrementPost = (post) => {
+    const { dispatch } = this.props;
+    dispatch(incrementPost(post));
+  };
+
+  decrementPost = (post) => {
+    const { dispatch } = this.props;
+    dispatch(decrementPost(post));
+  };
+
   static propTypes = {
     post: PropTypes.object.isRequired
   }
@@ -17,13 +29,18 @@ class Post extends Component {
           <div className="book-body">{post.body}</div>
           <div className="book-author">Author: {post.author}</div>
           <div className="book-voteScore">Vote Score: {post.voteScore}</div>
-          <a href="">Vote Up</a>
-          <br/>
-          <a href="">Vote Down</a>
+          <div onClick={event => this.incrementPost(post)}>Vote Up</div>
+          <div onClick={event => this.decrementPost(post)}>Vote Down</div>
         </div>
       </li>
     )
   }
 }
 
-export default Post;
+function mapStateToProps({ posts }) {
+  return {
+    posts
+  };
+};
+
+export default connect(mapStateToProps)(Post);

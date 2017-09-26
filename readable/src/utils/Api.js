@@ -12,5 +12,13 @@ export const getCategories = () =>
 export const getAllPosts = () =>
   fetch(`${api}/posts`, { headers });
 
+export const updatePostVoteScore = (post, option) =>
+  fetch(`${api}/posts/${post.id}`, {
+    headers,
+    method: 'POST',
+    body: JSON.stringify({ option: option })
+  }
+);
+
 export const getPostComments = (postId) =>
   fetch(`${api}/posts/${postId}/comments`, { headers });
