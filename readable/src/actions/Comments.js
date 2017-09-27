@@ -10,17 +10,18 @@ export function getComment({ id }) {
 	}
 };
 
-export function getPostComments({ postComments }) {
+export function getPostComments( post, comments) {
 	return {
 		type: GET_POST_COMMENTS,
-		postComments
+		post,
+		comments
 	}
 };
 
-export function fetchPostsComments() {
+export function fetchPostComments(post) {
 	return function (dispatch) {
-		API.getPostComments()
+		API.getPostComments(post.id)
 			.then((response) => response.json())
-			.then((postComments) => dispatch(getPostComments(postComments)));
+			.then((postComments) => dispatch(getPostComments(post, postComments)));
 	}
 }

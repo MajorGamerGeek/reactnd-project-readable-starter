@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
 import { fetchCategories } from '../actions/Categories';
-import Comment from './Comment';
 import Categories from './Categories';
 import Posts from './Posts';
 import '../App.css';

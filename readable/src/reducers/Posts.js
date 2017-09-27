@@ -11,7 +11,7 @@ function posts(state = { posts : [] }, action) {
 		case GET_ALL_POSTS:
 			return {
 				...state,
-				posts: action.posts
+				posts: action.posts.filter(post => post.deleted === false)
 			}
 		case UP_VOTE_POST:
 			return {

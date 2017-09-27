@@ -2,8 +2,24 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { incrementPost, decrementPost } from '../actions/Posts';
+import { fetchPostComments } from '../actions/Comments';
+import Comment from './Comment';
 
 class Post extends Component {
+  componentDidMount() {
+    const { dispatch, post } = this.props;
+    dispatch(fetchPostComments(post));
+  };
+
+  getPostComments = (postId) => {
+    const { comments } = this.props;
+
+    if (comments[postId]) {
+      return comments[postId];
+    }
+    return [];
+  };
+
   incrementPost = (post) => {
     const { dispatch } = this.props;
     dispatch(incrementPost(post));
@@ -19,8 +35,8 @@ class Post extends Component {
   }
 
   render() {
-    const { post } = this.props;
-
+    const { post, comments } = this.props;
+    
     return (
       <li>
         <div className="post">
@@ -31,15 +47,21 @@ class Post extends Component {
           <div className="book-voteScore">Vote Score: {post.voteScore}</div>
           <div onClick={event => this.incrementPost(post)}>Vote Up</div>
           <div onClick={event => this.decrementPost(post)}>Vote Down</div>
+          <div>
+            <ol className="posts-list">
+              {this.getPostComments(post.id).map(comment => (<Comment key={comment.id} comment={comment} />))}
+            </ol>
+        </div>
         </div>
       </li>
     )
   }
 }
 
-function mapStateToProps({ posts }) {
+function mapStateToProps({ posts, comments }) {
   return {
-    posts
+    posts,
+    comments
   };
 };
 

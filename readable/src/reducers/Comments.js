@@ -3,13 +3,13 @@ import {
 	GET_POST_COMMENTS
 } from '../actions/Comments';
 
-function comments(state = [], action) {
+function comments(state = {}, action) {
 	switch (action.type) {
 		case GET_POST_COMMENTS:
-			return [
+			return {
 				...state,
-				...action.comments
-			]
+				[action.post.id]: action.comments
+		}
 		default:
 			return state;
 	}
