@@ -1,10 +1,10 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { fetchCategories } from '../actions/Categories';
-import Categories from './Categories';
 import Posts from './Posts';
+import CategoryPosts from './CategoryPosts';
 import '../App.css';
 
 class App extends Component {
@@ -28,8 +28,10 @@ class App extends Component {
             ))}
           </div>
         </div>
-        <Route exact path="/" component={Posts} />
-        <Route exact path='/:category' component={Categories} />
+        <Switch>
+          <Route exact path='/' component={Posts} />
+          <Route exact path='/:category' component={CategoryPosts} />
+        </Switch>
       </div>
     );
   }

@@ -13,10 +13,10 @@ export function getPost({ id }) {
 	}
 };
 
-export function getCategoryPost({ category }) {
+export function getCategoryPosts(posts) {
 	return {
 		type: GET_CATEGORY_POSTS,
-		category
+		posts
 	}
 };
 
@@ -47,6 +47,15 @@ export function fetchAllPosts() {
 			.then((response) => response.json())
 			.then((posts) => dispatch(getAllPosts(posts)));
 	}
+};
+
+export function fetchCategoryPosts(category) {
+	console.log(category);
+	return function (dispatch) {
+		API.getCategoryPosts(category)
+		.then((response) => response.json())
+		.then((posts) => dispatch(getCategoryPosts(posts)));
+	};
 };
 
 export function incrementPost(post) {

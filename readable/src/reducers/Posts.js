@@ -13,6 +13,11 @@ function posts(state = { posts : [] }, action) {
 				...state,
 				posts: action.posts.filter(post => post.deleted === false)
 			}
+		case GET_CATEGORY_POSTS:
+			return {
+				...state,
+				posts: action.posts.filter(post => post.deleted === false)
+			}
 		case UP_VOTE_POST:
 			return {
 				...state,
