@@ -6,10 +6,10 @@ export const GET_ALL_POSTS = 'GET_ALL_POSTS';
 export const UP_VOTE_POST = ' UP_VOTE_POST';
 export const DOWN_VOTE_POST = 'DOWN_VOTE_POST';
 
-export function getPost({ id }) {
+export function getPost(posts) {
 	return {
 		type: GET_POST,
-		id
+		posts
 	}
 };
 
@@ -38,6 +38,14 @@ export function downVotePost(post) {
 	return {
 		type: DOWN_VOTE_POST,
 		post
+	}
+};
+
+export function fetchPost(postId) {
+	return function (dispatch) {
+		API.getPost(postId)
+			.then((response) => response.json())
+			.then((posts) => dispatch(getPost(posts)));
 	}
 };
 

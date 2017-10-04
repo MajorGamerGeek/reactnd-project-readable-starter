@@ -29,8 +29,9 @@ class App extends Component {
           </div>
         </div>
         <Switch>
-          <Route exact path='/' component={Posts} />
+          <Route exact path='/' render={(props) => (<Posts detailView={false} {...props} />)} />
           <Route exact path='/:category' component={CategoryPosts} />
+          <Route exact path='/:category/:post_id' render={(props) => (<Posts detailView={true} {...props} />)} />
         </Switch>
       </div>
     );

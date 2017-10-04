@@ -9,6 +9,9 @@ const headers = {
 export const getCategories = () =>
   fetch(`${api}/categories`, { headers });
 
+export const getPost = (postId) =>
+  fetch(`${api}/posts/${postId}`, { headers });
+
 export const getAllPosts = () =>
   fetch(`${api}/posts`, { headers });
 

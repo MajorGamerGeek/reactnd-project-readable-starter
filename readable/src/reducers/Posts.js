@@ -6,8 +6,13 @@ import {
 	DOWN_VOTE_POST
 } from '../actions/Posts';
 
-function posts(state = { posts : [] }, action) {
+function posts(state = { posts: [] }, action) {
 	switch (action.type) {
+		case GET_POST:
+		return {
+			...state,
+			posts: action.posts.filter(post => post.deleted === false)
+		}
 		case GET_ALL_POSTS:
 			return {
 				...state,
