@@ -41,6 +41,14 @@ export const getCategories = () =>
 export const getCategoryPosts = (category) =>
   fetch(`${api}/${category}/posts`, { headers });
 
+export const addComment = () =>
+  fetch(`${api}/comments`, {
+    headers,
+    method: 'POST',
+    body: JSON.stringify({ option: option })
+  }
+);
+
 export const getComment = (commentId) =>
   fetch(`${api}/comments/${commentId}`, { headers });
 

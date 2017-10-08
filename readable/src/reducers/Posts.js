@@ -12,13 +12,13 @@ function posts(state = { posts: [] }, action) {
 		console.log(action);
 		return {
 			...state,
-			posts: true
+			posts: action.post
 		}
 		case DELETE_POST:
 		console.log(action);
 		return {
 			...state,
-			posts: true
+			posts: action.post
 		}
 		case GET_POST:
 		return {
