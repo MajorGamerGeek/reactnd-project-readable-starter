@@ -1,10 +1,26 @@
 import * as API from '../utils/Api';
 
+export const ADD_POST = 'ADD_POST';
+export const DELETE_POST = 'DELETE_POST';
 export const GET_POST = 'GET_POST';
 export const GET_CATEGORY_POSTS = 'GET_CATEGORY_POSTS';
 export const GET_ALL_POSTS = 'GET_ALL_POSTS';
 export const UP_VOTE_POST = ' UP_VOTE_POST';
 export const DOWN_VOTE_POST = 'DOWN_VOTE_POST';
+
+export function addPost(posts) {
+	return {
+		type: ADD_POST,
+		posts
+	}
+};
+
+export function deletePost(posts) {
+	return {
+		type: DELETE_POST,
+		posts
+	}
+};
 
 export function getPost(posts) {
 	return {
@@ -46,6 +62,14 @@ export function fetchPost(postId) {
 		API.getPost(postId)
 			.then((response) => response.json())
 			.then((posts) => dispatch(getPost(posts)));
+	}
+};
+
+export function deletePost(postId) {
+	return function (dispatch) {
+		API.deletePost(postId)
+			.then((response) => response.json())
+			.then((posts) => dispatch(deletePost(posts)));
 	}
 };
 

@@ -19,6 +19,9 @@ class App extends Component {
       <div className="App">
         <div className="App-header">
           <div className="categories">
+            <div>
+              <a href="/" className="category-link">Home</a>
+            </div>
             {categories && categories.map(category => (
               <div key={category.path}>                
                 <a href={`/${category.path}`} className="category-link">

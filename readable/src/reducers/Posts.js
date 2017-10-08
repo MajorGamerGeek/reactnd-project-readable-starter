@@ -8,10 +8,22 @@ import {
 
 function posts(state = { posts: [] }, action) {
 	switch (action.type) {
+		case ADD_POST:
+		console.log(action);
+		return {
+			...state,
+			posts: true
+		}
+		case DELETE_POST:
+		console.log(action);
+		return {
+			...state,
+			posts: true
+		}
 		case GET_POST:
 		return {
 			...state,
-			posts: action.posts.filter(post => post.deleted === false)
+			posts: [action.posts].filter(post => post.deleted === false)
 		}
 		case GET_ALL_POSTS:
 			return {

@@ -31,6 +31,7 @@ class Post extends Component {
           <div className="book-voteScore">Vote Score: {post.voteScore}</div>
           <div onClick={event => this.incrementPost(post)}>Vote Up</div>
           <div onClick={event => this.decrementPost(post)}>Vote Down</div>
+          <a href={`/${post.category}/${post.id}`}>Detail View</a>
           <div>
 
           </div>

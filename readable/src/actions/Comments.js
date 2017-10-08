@@ -1,7 +1,8 @@
 import * as API from '../utils/Api';
 
 export const GET_COMMENT = 'GET_COMMENT';
-export const GET_POST_COMMENTS = 'GET_POST_COMMENTS ';
+export const GET_POST_COMMENTS = 'GET_POST_COMMENTS';
+export const ADD_COMMENTS = 'ADD_COMMENT';
 
 export function getComment({ id }) {
 	return {
