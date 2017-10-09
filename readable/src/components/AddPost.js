@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addComment } from '../actions/Comments';
+import { addPost } from '../actions/Posts';
 
-class AddComment extends Component {
+class AddPost extends Component {
   incrementPost = (post) => {
     const { dispatch } = this.props;
     dispatch(incrementPost(post));
@@ -14,4 +14,4 @@ function mapStateToProps() {
   };
 };
 
-export default connect(mapStateToProps)(AddComment);
+export default connect(mapStateToProps)(AddPost);

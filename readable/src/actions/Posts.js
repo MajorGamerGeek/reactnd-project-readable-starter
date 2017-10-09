@@ -65,7 +65,7 @@ export function fetchPost(postId) {
 	}
 };
 
-export function deletePost(postId) {
+export function removePost(postId) {
 	return function (dispatch) {
 		API.deletePost(postId)
 			.then((response) => response.json())

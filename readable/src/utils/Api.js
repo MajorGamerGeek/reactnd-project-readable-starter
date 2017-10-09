@@ -41,11 +41,11 @@ export const getCategories = () =>
 export const getCategoryPosts = (category) =>
   fetch(`${api}/${category}/posts`, { headers });
 
-export const addComment = () =>
+export const addComment = (comment) =>
   fetch(`${api}/comments`, {
     headers,
     method: 'POST',
-    body: JSON.stringify({ option: option })
+    body: JSON.stringify({ option: comment })
   }
 );
 

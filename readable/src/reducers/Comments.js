@@ -5,6 +5,11 @@ import {
 
 function comments(state = {}, action) {
 	switch (action.type) {
+		case GET_COMMENT:
+			return {
+				...state,
+				comment: action.comment
+			}
 		case GET_POST_COMMENTS:
 			return {
 				...state,
