@@ -2,7 +2,9 @@ import * as API from '../utils/Api';
 
 export const GET_COMMENT = 'GET_COMMENT';
 export const GET_POST_COMMENTS = 'GET_POST_COMMENTS';
-export const ADD_COMMENTS = 'ADD_COMMENT';
+export const ADD_COMMENT = 'ADD_COMMENT';
+export const UP_VOTE_COMMENT = 'UP_VOTE_COMMENT';
+export const DOWN_VOTE_COMMENT = 'DOWN_VOTE_COMMENT';
 
 export function getComment({ id }) {
 	return {
@@ -19,6 +21,20 @@ export function getPostComments( post, comments) {
 	}
 };
 
+export function upVoteComment(comment) {
+	return {
+		type: UP_VOTE_COMMENT,
+		comment
+	}
+};
+
+export function downVoteComment(comment) {
+	return {
+		type: DOWN_VOTE_COMMENT,
+		comment
+	}
+};
+
 export function fetchPostComments(post) {
 	return function (dispatch) {
 		API.getPostComments(post.id)
@@ -26,3 +42,19 @@ export function fetchPostComments(post) {
 			.then((postComments) => dispatch(getPostComments(post, postComments)));
 	}
 }
+
+export function incrementComment(comment) {
+	return function (dispatch) {
+		API.updateCommentVoteScore(comment, 'upVote')
+		.then((response) => response.json())
+		.then((comment) => dispatch(upVoteComment(comment)));
+	};
+};
+
+export function decrementComment(comment) {
+	return function (dispatch) {
+		API.updateCommentVoteScore(comment, 'downVote')
+		.then((response) => response.json())
+		.then((comment) => dispatch(downVoteComment(comment)));
+	};
+};

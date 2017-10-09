@@ -43,17 +43,17 @@ export function getAllPosts(posts) {
 	}
 };
 
-export function upVotePost(post) {
+export function upVotePost(posts) {
 	return {
 		type: UP_VOTE_POST,
-		post
+		posts
 	}
 };
 
-export function downVotePost(post) {
+export function downVotePost(posts) {
 	return {
 		type: DOWN_VOTE_POST,
-		post
+		posts
 	}
 };
 
@@ -94,7 +94,7 @@ export function incrementPost(post) {
 	return function (dispatch) {
 		API.updatePostVoteScore(post, 'upVote')
 		.then((response) => response.json())
-		.then((post) => dispatch(upVotePost(post)));
+		.then((posts) => dispatch(upVotePost(posts)));
 	};
 };
 
@@ -102,6 +102,6 @@ export function decrementPost(post) {
 	return function (dispatch) {
 		API.updatePostVoteScore(post, 'downVote')
 		.then((response) => response.json())
-		.then((post) => dispatch(downVotePost(post)));
+		.then((posts) => dispatch(downVotePost(posts)));
 	};
 };

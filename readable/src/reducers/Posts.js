@@ -8,55 +8,48 @@ import {
 	DOWN_VOTE_POST
 } from '../actions/Posts';
 
-function posts(state = { posts: [] }, action) {
+function posts(state = [], action) {
 	switch (action.type) {
 		case ADD_POST:
 		console.log(action);
 		return {
-			...state,
 			posts: action.post
 		}
 		case DELETE_POST:
 		console.log(action);
 		return {
-			...state,
 			posts: action.post
 		}
 		case GET_POST:
-		return {
-			...state,
-			posts: [action.posts].filter(post => post.deleted === false)
-		}
+			return [
+				...[action.posts]
+		]
 		case GET_ALL_POSTS:
-			return {
-				...state,
-				posts: action.posts.filter(post => post.deleted === false)
-			}
+			return [
+				...action.posts.filter(post => post.deleted === false)
+		]
 		case GET_CATEGORY_POSTS:
-			return {
-				...state,
-				posts: action.posts.filter(post => post.deleted === false)
-			}
+			return [
+				...action.posts.filter(post => post.deleted === false)
+		]
 		case UP_VOTE_POST:
-			return {
-				...state,
-				posts: state.posts.map((post) => {
-					if (post.id === action.post.id) {
-							return action.post
+			return [
+				...state.map((post) => {
+					if (post.id === action.posts.id) {
+							return action.posts
 					}
 					return post
 				})
-			}
+		]
 		case DOWN_VOTE_POST:
-			return {
-				...state,
-				posts: state.posts.map((post) => {
-					if (post.id === action.post.id) {
-							return action.post
-					}
-					return post
-				})
-			}
+		return [
+			...state.map((post) => {
+				if (post.id === action.posts.id) {
+						return action.posts
+				}
+				return post
+			})
+		]
 		default:
 			return state;
 	}

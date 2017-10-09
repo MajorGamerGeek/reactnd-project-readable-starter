@@ -30,7 +30,7 @@ class CategoryPosts extends Component {
 
 function mapStateToProps({ posts }) {
   return {
-    posts: posts.posts
+    posts
   };
 }
 

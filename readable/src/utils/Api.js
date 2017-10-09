@@ -61,3 +61,11 @@ export const deleteComment = (commentId) =>
 
 export const getPostComments = (postId) =>
   fetch(`${api}/posts/${postId}/comments`, { headers });
+
+export const updateCommentVoteScore = (comment, option) =>
+  fetch(`${api}/comments/${comment.id}`, {
+    headers,
+    method: 'POST',
+    body: JSON.stringify({ option: option })
+  }
+);
