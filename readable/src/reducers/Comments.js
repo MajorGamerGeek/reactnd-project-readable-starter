@@ -5,21 +5,27 @@ import {
 	DOWN_VOTE_COMMENT
 } from '../actions/Comments';
 
-function comments(state = [], action) {
+function comments(state = {}, action) {
 	switch (action.type) {
 		case GET_COMMENT:
 			return {
-				comment: action.comment
+				...action.comment
 		}
 		case GET_POST_COMMENTS:
 			return {
-				[action.post.id]: action.comments
+				...action.comments
 		}
 		case UP_VOTE_COMMENT:
 			console.log(state);
 			console.log(action);
+			var actionID;
+
+			for (const key in state) {
+				actionID = [key]
+			}
+			console.log(actionID);
 			return [
-				...state.map((comment) => {
+				...action.comments.map((comment) => {
 					if (comment.id === action.comment.id) {
 							return action.comment
 					}

@@ -14,10 +14,13 @@ class PostDetail extends Component {
   getPostComments = (postId) => {
     const { comments } = this.props;
 
-    if (comments[postId]) {
-      return comments[postId];
-    }
-    return [];
+    console.log(this.props);
+    comments.map((comment) => {
+      if (comment.id === postId) {
+        return comment;
+      }
+      return [];
+    });
   };
 
   incrementPost = (post) => {
@@ -51,7 +54,7 @@ class PostDetail extends Component {
             <ol className="posts-list">
               {this.getPostComments(post.id).map(comment => (<Comment key={comment.id} comment={comment} />))}
             </ol>
-        </div>
+          </div>
         </div>
       </li>
     )
