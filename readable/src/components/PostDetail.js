@@ -14,13 +14,10 @@ class PostDetail extends Component {
   getPostComments = (postId) => {
     const { comments } = this.props;
 
-    console.log(this.props);
-    comments.map((comment) => {
-      if (comment.id === postId) {
-        return comment;
-      }
-      return [];
-    });
+    if (comments[postId]) {
+      return comments[postId];
+    }
+    return [];
   };
 
   incrementPost = (post) => {
