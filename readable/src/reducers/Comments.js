@@ -12,20 +12,12 @@ function comments(state = {}, action) {
 				...action.comment
 		}
 		case GET_POST_COMMENTS:
-			return {
-				...action.comments
-		}
-		case UP_VOTE_COMMENT:
-			console.log(state);
-			console.log(action);
-			var actionID;
-
-			for (const key in state) {
-				actionID = [key]
-			}
-			console.log(actionID);
 			return [
-				...action.comments.map((comment) => {
+				...action.comments
+		]
+		case UP_VOTE_COMMENT:
+			return [
+				...state.map((comment) => {
 					if (comment.id === action.comment.id) {
 							return action.comment
 					}
