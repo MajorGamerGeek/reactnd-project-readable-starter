@@ -6,8 +6,6 @@ import '../App.css';
 class Categories extends Component {
   componentDidMount() {
     this.props.fetchCategories();
-
-    console.log('props', this.props);
   };
 
   render() {

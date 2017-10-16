@@ -1,10 +1,33 @@
 import * as API from '../utils/Api';
 
+export const ADD_COMMENT = 'ADD_COMMENT';
+export const EDIT_COMMENT = 'EDIT_COMMENT';
+export const DELETE_COMMENT = 'DELETE_COMMENT';
 export const GET_COMMENT = 'GET_COMMENT';
 export const GET_POST_COMMENTS = 'GET_POST_COMMENTS';
-export const ADD_COMMENT = 'ADD_COMMENT';
 export const UP_VOTE_COMMENT = 'UP_VOTE_COMMENT';
 export const DOWN_VOTE_COMMENT = 'DOWN_VOTE_COMMENT';
+
+export function addComment(comments) {
+	return {
+		type: ADD_COMMENT,
+		comments
+	}
+};
+
+export function editComment(comments) {
+	return {
+		type: EDIT_COMMENT,
+		comments
+	}
+};
+
+export function deleteComment(comments) {
+	return {
+		type: DELETE_COMMENT,
+		comments
+	}
+};
 
 export function getComment({ id }) {
 	return {

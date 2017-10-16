@@ -17,16 +17,16 @@ function posts(state = [], action) {
 		}
 		case DELETE_POST:
 		console.log(action);
-		return {
-			posts: action.post
-		}
+		return [
+			...action.posts.filter(post => post.deleted === false)
+		]
 		case GET_POST:
 			return [
 				...[action.posts]
 		]
 		case GET_ALL_POSTS:
 			return [
-				...action.posts.filter(post => post.deleted === false)
+				...action.posts.filter(post => post.deleted === false).sort((a, b) => {return b.voteScore - a.voteScore})
 		]
 		case GET_CATEGORY_POSTS:
 			return [

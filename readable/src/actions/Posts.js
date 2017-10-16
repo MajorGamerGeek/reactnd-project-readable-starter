@@ -1,6 +1,7 @@
 import * as API from '../utils/Api';
 
 export const ADD_POST = 'ADD_POST';
+export const EDIT_POST = 'EDIT_POST';
 export const DELETE_POST = 'DELETE_POST';
 export const GET_POST = 'GET_POST';
 export const GET_CATEGORY_POSTS = 'GET_CATEGORY_POSTS';
@@ -11,6 +12,13 @@ export const DOWN_VOTE_POST = 'DOWN_VOTE_POST';
 export function addPost(posts) {
 	return {
 		type: ADD_POST,
+		posts
+	}
+};
+
+export function editPost(posts) {
+	return {
+		type: EDIT_POST,
 		posts
 	}
 };

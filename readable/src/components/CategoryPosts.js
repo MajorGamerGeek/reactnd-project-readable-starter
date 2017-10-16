@@ -9,8 +9,6 @@ class CategoryPosts extends Component {
     const { dispatch } = this.props;
     const { category } = this.props.match.params;
     dispatch(fetchCategoryPosts(category));
-
-    console.log('props', this.props);
   };
 
   render() {

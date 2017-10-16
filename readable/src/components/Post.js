@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { incrementPost, decrementPost } from '../actions/Posts';
+import { removePost, incrementPost, decrementPost } from '../actions/Posts';
 import { fetchPostComments } from '../actions/Comments';
 import Comment from './Comment';
 
@@ -9,6 +9,11 @@ class Post extends Component {
   componentDidMount() {
     const { dispatch, post } = this.props;
     dispatch(fetchPostComments(post));
+  };
+
+  removePost = (post) => {
+    const { dispatch } = this.props;
+    dispatch(removePost(post));
   };
 
   incrementPost = (post) => {
@@ -37,25 +42,35 @@ class Post extends Component {
     return postComments;
   };
 
+  getPostCommentsCount = (postId) => {
+    const { comments } = this.props;
+
+    if (Array.isArray(comments)) {
+      return comments.filter(comment => comment.parentId === postId).length;
+    }
+    
+    return 0;
+  };
+
   static propTypes = {
     post: PropTypes.object.isRequired,
     postDetails: PropTypes.bool.isRequired
   }
 
   render() {
-    const { post, postDetails, comments } = this.props;
+    const { post, postDetails } = this.props;
     
     return (
       <li>
         <div className="post">
-          <div className="post-id">{post.id}</div>
           <div className="post-title">{post.title}</div>
+          <div className="post-timeStamp">Created: {post.timestamp}</div>
           <div className="post-body">{post.body}</div>
           <div className="post-author">Author: {post.author}</div>
           <div className="post-voteScore">Vote Score: {post.voteScore}</div>
           <div onClick={event => this.incrementPost(post)}>Vote Up</div>
           <div onClick={event => this.decrementPost(post)}>Vote Down</div>
-          <div className="post-commentsCount">{comments.length} Comments</div>
+          <div className="post-commentsCount">{this.getPostCommentsCount(post.id)} Comments</div>
           {postDetails ?
             <div>
               <ol className="posts-list">
@@ -63,6 +78,7 @@ class Post extends Component {
               </ol>
             </div>
           : <a href={`/${post.category}/${post.id}`}>Detail View</a>}
+          <div onClick={event => this.removePost(post)}>Delete Post</div>
         </div>
       </li>
     )
