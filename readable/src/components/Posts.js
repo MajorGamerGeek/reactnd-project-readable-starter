@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchPost, fetchAllPosts } from '../actions/Posts';
 import Post from './Post';
-import PostDetail from './PostDetail';
 
 class Posts extends Component {
   static propTypes = {
@@ -18,18 +17,16 @@ class Posts extends Component {
       dispatch(fetchPost(post_id));
     } else {
       dispatch(fetchAllPosts());
-    }   
-
-    console.log('props', this.props);
+    }
   };
 
   render() {
     const { posts, detailView } = this.props;
-
+    
     return (
       <div>
         <ol className="posts-list">
-          {posts && detailView ? posts.map(post => (<PostDetail key={post.id} post={post} />)) : posts && posts.map(post => (<Post key={post.id} post={post} />))}
+          {posts.map((post) => <Post key={post.id} post={post} postDetails={detailView} />)}
         </ol>
       </div>
     );
