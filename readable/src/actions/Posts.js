@@ -23,10 +23,10 @@ export function editPost(posts) {
 	}
 };
 
-export function deletePost(posts) {
+export function deletePost(post) {
 	return {
 		type: DELETE_POST,
-		posts
+		post
 	}
 };
 
@@ -77,7 +77,7 @@ export function removePost(postId) {
 	return function (dispatch) {
 		API.deletePost(postId)
 			.then((response) => response.json())
-			.then((posts) => dispatch(deletePost(posts)));
+			.then((post) => dispatch(deletePost(post)));
 	}
 };
 

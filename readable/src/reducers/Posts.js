@@ -16,9 +16,9 @@ function posts(state = [], action) {
 			posts: action.post
 		}
 		case DELETE_POST:
-		console.log(action);
+		console.log(state);
 		return [
-			...action
+			...state
 		]
 		case GET_POST:
 			return [
