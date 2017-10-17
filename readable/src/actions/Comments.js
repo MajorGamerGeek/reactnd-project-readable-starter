@@ -22,10 +22,10 @@ export function editComment(comments) {
 	}
 };
 
-export function deleteComment(comments) {
+export function deleteComment(comment) {
 	return {
 		type: DELETE_COMMENT,
-		comments
+		comment
 	}
 };
 
@@ -36,7 +36,7 @@ export function getComment({ id }) {
 	}
 };
 
-export function getPostComments( post, comments) {
+export function getPostComments(post, comments) {
 	return {
 		type: GET_POST_COMMENTS,
 		post,
@@ -65,6 +65,14 @@ export function fetchPostComments(post) {
 			.then((postComments) => dispatch(getPostComments(post, postComments)));
 	}
 }
+
+export function removeComment(comment) {
+	return function (dispatch) {
+		API.deleteComment(comment.id)
+			.then((response) => response.json())
+			.then((comment) => dispatch(deleteComment(comment)));
+	}
+};
 
 export function incrementComment(comment) {
 	return function (dispatch) {

@@ -55,7 +55,7 @@ export const getComment = (commentId) =>
 export const deleteComment = (commentId) =>
   fetch(`${api}/comments/${commentId}`, {
     headers,
-    method: 'DELETE',
+    method: 'DELETE'
   }
 );
 

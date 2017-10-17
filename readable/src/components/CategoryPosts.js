@@ -19,7 +19,7 @@ class CategoryPosts extends Component {
       <div>
         <div>{category} Posts</div>
         <ol className="posts-list">
-          {posts && posts.map(post => (<Post key={post.id} post={post} postDetails={false} />))}
+          {posts.map(post => (<Post key={post.id} post={post} postDetails={false} />))}
         </ol>
       </div>
     );

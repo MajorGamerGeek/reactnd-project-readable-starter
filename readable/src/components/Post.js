@@ -42,16 +42,6 @@ class Post extends Component {
     return postComments;
   };
 
-  getPostCommentsCount = (postId) => {
-    const { comments } = this.props;
-
-    if (Array.isArray(comments)) {
-      return comments.filter(comment => comment.parentId === postId).length;
-    }
-    
-    return 0;
-  };
-
   static propTypes = {
     post: PropTypes.object.isRequired,
     postDetails: PropTypes.bool.isRequired
@@ -59,7 +49,7 @@ class Post extends Component {
 
   render() {
     const { post, postDetails } = this.props;
-    
+    console.log(post);
     return (
       <li>
         <div className="post">
@@ -70,7 +60,7 @@ class Post extends Component {
           <div className="post-voteScore">Vote Score: {post.voteScore}</div>
           <div onClick={event => this.incrementPost(post)}>Vote Up</div>
           <div onClick={event => this.decrementPost(post)}>Vote Down</div>
-          <div className="post-commentsCount">{this.getPostCommentsCount(post.id)} Comments</div>
+          <div className="post-commentsCount">{post.commentCount} Comments</div>
           {postDetails ?
             <div>
               <ol className="posts-list">

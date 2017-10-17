@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { incrementComment, decrementComment } from '../actions/Comments';
+import { incrementComment, decrementComment, removeComment } from '../actions/Comments';
 
 class Comment extends Component {
   static propTypes = {
@@ -17,6 +17,11 @@ class Comment extends Component {
     const { dispatch } = this.props;
     dispatch(decrementComment(comment));
   };
+
+  removeComment = (comment) => {
+    const { dispatch } = this.props;
+    dispatch(removeComment(comment));
+  }
 
   render() {
     const { comment } = this.props;
@@ -34,6 +39,7 @@ class Comment extends Component {
           <div className="comment-parentId">{comment.parentId}</div>
           <div className="comment-deleted">{comment.deleted}</div>
           <div className="comment-parentDeleted">{comment.parentDeleted}</div>
+          <div className="comment-delete" onClick={event => this.removeComment(comment)}>Delete Comment</div>
         </div>
       </li>
     )
