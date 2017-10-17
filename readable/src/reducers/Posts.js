@@ -18,9 +18,11 @@ function posts(state = [], action) {
 		case DELETE_POST:
 		console.log(action);
 		console.log(state);
+		console.log(action.postId);
+
 		return [
 			...state.map((post) => {
-				if (post.id === action.post.id) {
+				if (post.id === action.postId) {
 						return action.post
 				}
 				return post

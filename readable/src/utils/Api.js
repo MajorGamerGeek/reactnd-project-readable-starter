@@ -17,7 +17,8 @@ export const addPost = (option) =>
 export const deletePost = (postId) =>
   fetch(`${api}/posts/${postId}`, {
     headers,
-    method: 'DELETE'
+    method: 'DELETE',
+    body: JSON.stringify(postId)
   }
 );
 
@@ -55,7 +56,7 @@ export const getComment = (commentId) =>
 export const deleteComment = (commentId) =>
   fetch(`${api}/comments/${commentId}`, {
     headers,
-    method: 'DELETE'
+    method: 'DELETE',
   }
 );
 
