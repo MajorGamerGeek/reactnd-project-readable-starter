@@ -14,8 +14,8 @@ export const addPost = (option) =>
   }
 );
 
-export const deletePost = (post) =>
-  fetch(`${api}/posts/${post.id}`, {
+export const deletePost = (postId) =>
+  fetch(`${api}/posts/${postId}`, {
     headers,
     method: 'DELETE'
   }

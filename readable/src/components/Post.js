@@ -11,9 +11,9 @@ class Post extends Component {
     dispatch(fetchPostComments(post));
   };
 
-  removePost = (post) => {
+  removePost = (postId) => {
     const { dispatch } = this.props;
-    dispatch(removePost(post));
+    dispatch(removePost(postId));
   };
 
   incrementPost = (post) => {
@@ -78,7 +78,7 @@ class Post extends Component {
               </ol>
             </div>
           : <a href={`/${post.category}/${post.id}`}>Detail View</a>}
-          <div onClick={event => this.removePost(post)}>Delete Post</div>
+          <div onClick={event => this.removePost(post.id)}>Delete Post</div>
         </div>
       </li>
     )

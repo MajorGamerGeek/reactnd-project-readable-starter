@@ -18,7 +18,7 @@ function posts(state = [], action) {
 		case DELETE_POST:
 		console.log(action);
 		return [
-			...action.posts.filter(post => post.deleted === false)
+			...action
 		]
 		case GET_POST:
 			return [
