@@ -16,10 +16,6 @@ function posts(state = [], action) {
 			posts: action.post
 		}
 		case DELETE_POST:
-		console.log(action);
-		console.log(state);
-		console.log(action.post);
-
 		return [
 			...state.filter((post) => post.id !== action.post.id)
 		]
