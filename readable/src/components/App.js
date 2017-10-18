@@ -5,7 +5,6 @@ import { Route, Switch } from 'react-router-dom';
 import { fetchCategories } from '../actions/Categories';
 import Posts from './Posts';
 import EditPost from './EditPost';
-import CategoryPosts from './CategoryPosts';
 import '../App.css';
 
 class App extends Component {
@@ -33,11 +32,12 @@ class App extends Component {
           </div>
         </div>
         <Switch>
-          <Route exact path='/' render={(props) => (<Posts detailView={false} {...props} />)} />
+          <Route exact path='/' render={(props) => (<Posts {...props} />)} />
           <Route exact path='/addpost' render={(props) => (<EditPost {...props} />)} />
           <Route exact path='/editpost/:post_id' render={(props) => (<EditPost {...props} />)} />
-          <Route exact path='/:category' component={CategoryPosts} />
-          <Route exact path='/:category/:post_id' render={(props) => (<Posts detailView={true} {...props} />)} />
+          <Route exact path='/editpost/:post_id/:comment_id' render={(props) => (<EditPost {...props} />)} />
+          <Route exact path='/:category' render={(props) => (<Posts {...props} />)} /> />
+          <Route exact path='/:category/:post_id' render={(props) => (<Posts {...props} />)} />
         </Switch>
       </div>
     );
