@@ -36,10 +36,9 @@ export function getComment({ id }) {
 	}
 };
 
-export function getPostComments(post, comments) {
+export function getPostComments(comments) {
 	return {
 		type: GET_POST_COMMENTS,
-		post,
 		comments
 	}
 };
@@ -58,11 +57,11 @@ export function downVoteComment(comment) {
 	}
 };
 
-export function fetchPostComments(post) {
+export function fetchPostComments(postId) {
 	return function (dispatch) {
-		API.getPostComments(post.id)
+		API.getPostComments(postId)
 			.then((response) => response.json())
-			.then((postComments) => dispatch(getPostComments(post, postComments)));
+			.then((postComments) => dispatch(getPostComments(postComments)));
 	}
 }
 

@@ -7,8 +7,12 @@ import Comment from './Comment';
 
 class Post extends Component {
   componentDidMount() {
-    const { dispatch, post } = this.props;
-    dispatch(fetchPostComments(post));
+    const { postDetails } = this.props;
+    
+    if (postDetails) {
+      const { dispatch, post } = this.props;
+      dispatch(fetchPostComments(post.id));
+    }
   };
 
   removePost = (postId) => {

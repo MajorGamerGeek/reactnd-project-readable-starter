@@ -6,7 +6,8 @@ import Post from './Post';
 class Posts extends Component {
   state = {
     postDetails: false,
-    category: null
+    category: null,
+    sort: null
   };
 
   componentDidMount() {
@@ -26,7 +27,7 @@ class Posts extends Component {
 
   render() {
     const { posts } = this.props;
-    const { postDetails, category } = this.state;
+    const { postDetails, category, sort } = this.state;
     
     return (
       <div>
