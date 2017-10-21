@@ -25,7 +25,7 @@ function posts(state = [], action) {
 			]
 		case GET_ALL_POSTS:
 			return [
-				...action.posts.filter(post => post.deleted === false).sort((a, b) => {return b.voteScore - a.voteScore})
+				...action.posts.filter(post => post.deleted === false)
 			]
 		case GET_CATEGORY_POSTS:
 			return [
