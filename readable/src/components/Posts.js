@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchPost, fetchCategoryPosts, fetchAllPosts, sortPosts } from '../actions/Posts';
+import { fetchPost, fetchCategoryPosts, fetchAllPosts } from '../actions/Posts';
+import { sortBy } from '../actions/Sort';
 import Post from './Post';
 
 class Posts extends Component {
   state = {
     postDetails: false,
-    category: null,
-    sort: 'VoteScoreAsc'
+    category: null
   };
 
   componentDidMount() {
@@ -25,13 +25,28 @@ class Posts extends Component {
     }
   };
 
+  sortPosts = (posts, sort) => posts.sort((a, b) => {
+    switch (sort) {
+      case 'VoteScoreAsc':
+        return a.voteScore - b.voteScore;
+      case 'VoteScoreDesc':
+        return b.voteScore - a.voteScore;
+      case 'TimestampAsc':
+        return a.timestamp - b.timestamp;
+      case 'TimeStampDesc':
+        return b.timestamp - a.timestamp;
+      default: 
+        return 1;
+    }
+  });
+
   render() {
-    const { posts, dispatch } = this.props;
-    const { postDetails, category, sort } = this.state;
+    const { posts, dispatch, sort } = this.props;
+    const { postDetails, category } = this.state;
     
     return (
       <div>
-        <select onChange={event => dispatch(sortPosts(event.target.value))}>
+        <select onChange={event => dispatch(sortBy(event.target.value))}>
           <option value='VoteScoreAsc'>VoteScoreAsc</option>
           <option value='VoteScoreDesc'>VoteScoreDesc</option>
           <option value='TimestampAsc'>TimestampAsc</option>
@@ -39,16 +54,17 @@ class Posts extends Component {
         </select>
         {category && <div className="post-category">{category} Posts</div>}
         <ol className="posts-list">
-          {posts.map((post) => <Post key={post.id} post={post} postDetails={postDetails} />)}
+          {this.sortPosts(posts, sort).map((post) => <Post key={post.id} post={post} postDetails={postDetails} />)}
         </ol>
       </div>
     );
   }
 };
 
-function mapStateToProps({ posts }) {
+function mapStateToProps({ posts, sort }) {
   return {
-    posts
+    posts,
+    sort
   };
 };
 
