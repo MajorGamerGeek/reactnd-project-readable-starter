@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { removePost, incrementPost, decrementPost } from '../actions/Posts';
 import { fetchPostComments } from '../actions/Comments';
 import Comment from './Comment';
+import { formatDate } from '../utils/FormatDate';
 
 class Post extends Component {
   componentDidMount() {
@@ -58,7 +59,7 @@ class Post extends Component {
       <li>
         <div className="post">
           <div className="post-title">{post.title}</div>
-          <div className="post-timeStamp">Created: {post.timestamp}</div>
+          <div className="post-timeStamp">Created: { formatDate(post.timestamp) }</div>
           <div className="post-body">{post.body}</div>
           <div className="post-author">Author: {post.author}</div>
           <div className="post-voteScore">Vote Score: {post.voteScore}</div>

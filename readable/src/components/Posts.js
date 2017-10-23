@@ -41,17 +41,19 @@ class Posts extends Component {
   });
 
   render() {
-    const { posts, dispatch, sort } = this.props;
+    const { dispatch, posts, sort } = this.props;
     const { postDetails, category } = this.state;
     
     return (
       <div>
-        <select onChange={event => dispatch(sortBy(event.target.value))}>
-          <option value='VoteScoreAsc'>VoteScoreAsc</option>
-          <option value='VoteScoreDesc'>VoteScoreDesc</option>
-          <option value='TimestampAsc'>TimestampAsc</option>
-          <option value='TimestampDesc'>TimestampDesc</option>
-        </select>
+        { postDetails === false &&
+          <select onChange={event => dispatch(sortBy(event.target.value))}>
+            <option value='VoteScoreAsc'>VoteScoreAsc</option>
+            <option value='VoteScoreDesc'>VoteScoreDesc</option>
+            <option value='TimestampAsc'>TimestampAsc</option>
+            <option value='TimestampDesc'>TimestampDesc</option>
+          </select>
+        }
         {category && <div className="post-category">{category} Posts</div>}
         <ol className="posts-list">
           {this.sortPosts(posts, sort).map((post) => <Post key={post.id} post={post} postDetails={postDetails} />)}
