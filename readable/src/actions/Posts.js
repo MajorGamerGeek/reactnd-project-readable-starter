@@ -6,6 +6,7 @@ export const DELETE_POST = 'DELETE_POST';
 export const GET_POST = 'GET_POST';
 export const GET_CATEGORY_POSTS = 'GET_CATEGORY_POSTS';
 export const GET_ALL_POSTS = 'GET_ALL_POSTS';
+export const SORT_POSTS = 'SORT_POSTS';
 export const UP_VOTE_POST = ' UP_VOTE_POST';
 export const DOWN_VOTE_POST = 'DOWN_VOTE_POST';
 
@@ -50,6 +51,15 @@ export function getAllPosts(posts) {
 		posts
 	}
 };
+
+export function sortPosts(params) {
+	console.log(params);
+	return {
+		type: SORT_POSTS,
+		params
+	}
+};
+
 
 export function upVotePost(posts) {
 	return {
