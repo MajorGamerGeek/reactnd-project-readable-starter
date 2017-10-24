@@ -12,9 +12,17 @@ import {
 
 class EditPost extends Component {
   static propTypes = {
-    category: PropTypes.string
   }
 
+  componentDidMount() {
+    const { dispatch } = this.props;
+    const { post_id } = this.props.match.params;
+    
+    if (post_id) {
+
+    }
+  };
+  
   constructor(props) {
     super(props);
 

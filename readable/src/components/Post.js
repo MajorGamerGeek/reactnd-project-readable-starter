@@ -73,6 +73,7 @@ class Post extends Component {
               </ol>
             </div>
           : <a href={`/${post.category}/${post.id}`}>Detail View</a>}
+          <a href={`/EditPost/${post.id}`}>Edit Post</a>
           <div onClick={event => this.removePost(post.id)}>Delete Post</div>
         </div>
       </li>
