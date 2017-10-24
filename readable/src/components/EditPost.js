@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { addPosts, editPost } from '../actions/Posts';
 import {
   Col,
@@ -10,6 +11,10 @@ import {
 } from 'react-bootstrap';
 
 class EditPost extends Component {
+  static propTypes = {
+    category: PropTypes.string
+  }
+
   constructor(props) {
     super(props);
 
@@ -56,9 +61,19 @@ class EditPost extends Component {
             type="text"
             value={title}
             placeholder="Post title"
-            onChange={this.handleFormChange}
-          />
-          <FormControl.Feedback />
+            onChange={this.handleFormChange} />
+        </FormGroup>
+        <FormGroup controlId="category" validationState={this.state.validations.body}>
+          <Col xs={2}>
+            <ControlLabel>Category: </ControlLabel>
+          </Col>
+          <Col xs={10}>
+            <FormControl
+            type="text"
+            value={category}
+            placeholder="Category"
+            onChange={this.handleFormChange} />
+          </Col>
         </FormGroup>
         <FormGroup controlId="body" validationState={this.state.validations.body}>
           <Col xs={2}>
@@ -71,6 +86,18 @@ class EditPost extends Component {
               value={body}
               onChange={this.handleFormChange}
               placeholder="Enter Post Body" />
+          </Col>
+        </FormGroup>
+        <FormGroup controlId="author" validationState={this.state.validations.body}>
+          <Col xs={2}>
+            <ControlLabel>Author: </ControlLabel>
+          </Col>
+          <Col xs={10}>
+            <FormControl
+            type="text"
+            value={author}
+            placeholder="Author"
+            onChange={this.handleFormChange} />
           </Col>
         </FormGroup>
       </Form>
