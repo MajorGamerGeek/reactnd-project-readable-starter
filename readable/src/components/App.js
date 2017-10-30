@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
+import { Nav, NavItem } from 'react-bootstrap';
 import { fetchCategories } from '../actions/Categories';
 import Posts from './Posts';
 import EditPost from './EditPost';
@@ -14,22 +15,16 @@ class App extends Component {
 
   render() {
     const { categories } = this.props;
-
+    
     return (
       <div className="App">
         <div className="App-header">
-          <div className="categories">
-            <div>
-              <a href="/" className="category-link">Home</a>
-            </div>
+          <Nav activeHref="/" bsStyle="tabs">
+            <NavItem href="/">Home</NavItem>
             {categories && categories.map(category => (
-              <div key={category.path}>                
-                <a href={`/${category.path}`} className="category-link">
-                  <div className="category-name">{category.name}</div>
-                </a>
-              </div>
+              <NavItem key={category.path} href={`/${category.path}`} title={category.name}>{category.name}</NavItem>
             ))}
-          </div>
+          </Nav>
         </div>
         <Switch>
           <Route exact path='/' render={(props) => (<Posts {...props} />)} />

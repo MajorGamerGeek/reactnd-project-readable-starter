@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Grid, Row } from 'react-bootstrap';
 import { fetchPost, fetchCategoryPosts, fetchAllPosts } from '../actions/Posts';
 import { sortBy } from '../actions/Sort';
 import Post from './Post';
@@ -45,7 +46,8 @@ class Posts extends Component {
     const { postDetails, category } = this.state;
     
     return (
-      <div>
+      <Grid>
+        <Row>
         { postDetails === false &&
           <select onChange={event => dispatch(sortBy(event.target.value))}>
             <option value='VoteScoreAsc'>VoteScoreAsc</option>
@@ -54,11 +56,12 @@ class Posts extends Component {
             <option value='TimestampDesc'>TimestampDesc</option>
           </select>
         }
-        {category && <div className="post-category">{category} Posts</div>}
-        <ol className="posts-list">
-          {this.sortPosts(posts, sort).map((post) => <Post key={post.id} post={post} postDetails={postDetails} />)}
-        </ol>
-      </div>
+        </Row>
+        <Row>
+          {category && <div className="post-category">{category} Posts</div>}
+        </Row>
+        {this.sortPosts(posts, sort).map((post) => <Post key={post.id} post={post} postDetails={postDetails} />)}
+      </Grid>
     );
   }
 };

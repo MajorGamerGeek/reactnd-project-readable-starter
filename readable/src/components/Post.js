@@ -1,91 +1,91 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Row, Col, Glyphicon } from 'react-bootstrap';
 import { removePost, incrementPost, decrementPost } from '../actions/Posts';
 import { fetchPostComments } from '../actions/Comments';
 import Comment from './Comment';
 import { formatDate } from '../utils/FormatDate';
 
 class Post extends Component {
-  componentDidMount() {
-    const { postDetails } = this.props;
-    
-    if (postDetails) {
-      const { dispatch, post } = this.props;
-      dispatch(fetchPostComments(post.id));
-    }
-  };
+	componentDidMount() {
+		const { postDetails } = this.props;
 
-  removePost = (postId) => {
-    const { dispatch } = this.props;
-    dispatch(removePost(postId));
-  };
+		if (postDetails) {
+			const { dispatch, post } = this.props;
+			dispatch(fetchPostComments(post.id));
+		}
+	};
 
-  incrementPost = (post) => {
-    const { dispatch } = this.props;
-    dispatch(incrementPost(post));
-  };
+	removePost = (postId) => {
+		const { dispatch } = this.props;
+		dispatch(removePost(postId));
+	};
 
-  decrementPost = (post) => {
-    const { dispatch } = this.props;
-    dispatch(decrementPost(post));
-  };
+	incrementPost = (post) => {
+		const { dispatch } = this.props;
+		dispatch(incrementPost(post));
+	};
 
-  getPostComments = (postId) => {
-    const { comments } = this.props;
-    let postComments = [];
-    
-    if (Array.isArray(comments)) {
-      postComments = comments.map((comment) => {
-        if (comment.parentId === postId) {
-          return comment;
-        }    
-        return [];
-      });
-    }
+	decrementPost = (post) => {
+		const { dispatch } = this.props;
+		dispatch(decrementPost(post));
+	};
 
-    return postComments;
-  };
+	getPostComments = (postId) => {
+		const { comments } = this.props;
+		let postComments = [];
 
-  static propTypes = {
-    post: PropTypes.object.isRequired,
-    postDetails: PropTypes.bool.isRequired
-  }
+		if (Array.isArray(comments)) {
+			postComments = comments.map((comment) => {
+				if (comment.parentId === postId) {
+					return comment;
+				}
+				return [];
+			});
+		}
 
-  render() {
-    const { post, postDetails } = this.props;
-    console.log(post);
-    return (
-      <li>
-        <div className="post">
-          <div className="post-title">{post.title}</div>
-          <div className="post-timeStamp">Created: { formatDate(post.timestamp) }</div>
-          <div className="post-body">{post.body}</div>
-          <div className="post-author">Author: {post.author}</div>
-          <div className="post-voteScore">Vote Score: {post.voteScore}</div>
-          <div onClick={event => this.incrementPost(post)}>Vote Up</div>
-          <div onClick={event => this.decrementPost(post)}>Vote Down</div>
-          <div className="post-commentsCount">{post.commentCount} Comments</div>
-          {postDetails ?
-            <div>
-              <ol className="posts-list">
-                {this.getPostComments(post.id).map(comment => (<Comment key={comment.id} comment={comment} />))}
-              </ol>
-            </div>
-          : <a href={`/${post.category}/${post.id}`}>Detail View</a>}
-          <a href={`/EditPost/${post.id}`}>Edit Post</a>
-          <div onClick={event => this.removePost(post.id)}>Delete Post</div>
-        </div>
-      </li>
-    )
-  }
+		return postComments;
+	};
+
+	static propTypes = {
+		post: PropTypes.object.isRequired,
+		postDetails: PropTypes.bool.isRequired
+	}
+
+	render() {
+		const { post, postDetails } = this.props;
+		console.log(post);
+		return (
+			<Row className="post">
+				<Col xs={12} lg={3}>
+					<Glyphicon glyph="chevron-up" onClick={event => this.incrementPost(post)} />
+					<div className="post-voteScore">{post.voteScore}</div>
+					<Glyphicon glyph="chevron-down" onClick={event => this.decrementPost(post)} />
+				</Col>
+				<Col xs={12} lg={11} className="post-title">{post.title}</Col>
+				<Col xs={12} lg={11} className="post-timeStampAuthor">{formatDate(post.timestamp)} - {post.author}</Col>
+				<Col className="post-commentsCount">{post.commentCount} Comments</Col>
+				{postDetails ?
+					<div>
+						<Col xs={12} lg={11} className="post-body">{post.body}</Col>
+						<ol className="posts-list">
+							{this.getPostComments(post.id).map(comment => (<Comment key={comment.id} comment={comment} />))}
+						</ol>
+					</div>
+					: <a href={`/${post.category}/${post.id}`}>Detail View</a>}
+				<a href={`/EditPost/${post.id}`}>Edit Post</a>
+				<div onClick={event => this.removePost(post.id)}>Delete Post</div>
+			</Row>
+		)
+	}
 }
 
 function mapStateToProps({ posts, comments }) {
-  return {
-    posts,
-    comments
-  };
+	return {
+		posts,
+		comments
+	};
 };
 
 export default connect(mapStateToProps)(Post);
