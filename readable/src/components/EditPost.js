@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { addPosts, editPost } from '../actions/Posts';
+import { fetchPost, addPosts, editPost } from '../actions/Posts';
 import {
   Col,
   ControlLabel,
@@ -19,7 +19,7 @@ class EditPost extends Component {
     const { post_id } = this.props.match.params;
     
     if (post_id) {
-
+      dispatch(fetchPost(post_id));
     }
   };
   
@@ -62,20 +62,22 @@ class EditPost extends Component {
 
     return (
       <Form>
-        <FormGroup
-          controlId="title" validationState={this.state.validations.title}>
-          <ControlLabel>Title: </ControlLabel>
-          <FormControl
-            type="text"
-            value={title}
-            placeholder="Post title"
-            onChange={this.handleFormChange} />
+        <FormGroup controlId="title" validationState={this.state.validations.title}>
+          <Col xs={1}>
+            <ControlLabel>Title: </ControlLabel>
+          </Col>
+          <Col xs={12} md={11}>
+            <FormControl type="text"
+              value={title}
+              placeholder="Post title"
+              onChange={this.handleFormChange} />
+          </Col>          
         </FormGroup>
         <FormGroup controlId="category" validationState={this.state.validations.body}>
-          <Col xs={2}>
+          <Col xs={1}>
             <ControlLabel>Category: </ControlLabel>
           </Col>
-          <Col xs={10}>
+          <Col xs={12} md={11}>
             <FormControl
             type="text"
             value={category}
@@ -84,10 +86,10 @@ class EditPost extends Component {
           </Col>
         </FormGroup>
         <FormGroup controlId="body" validationState={this.state.validations.body}>
-          <Col xs={2}>
+          <Col xs={1}>
             <ControlLabel>Body: </ControlLabel>
           </Col>
-          <Col xs={10}>
+          <Col xs={12} md={11}>
             <FormControl
               rows={10}
               componentClass="textarea"
@@ -97,10 +99,10 @@ class EditPost extends Component {
           </Col>
         </FormGroup>
         <FormGroup controlId="author" validationState={this.state.validations.body}>
-          <Col xs={2}>
+          <Col xs={1}>
             <ControlLabel>Author: </ControlLabel>
           </Col>
-          <Col xs={10}>
+          <Col xs={12} md={11}>
             <FormControl
             type="text"
             value={author}

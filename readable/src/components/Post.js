@@ -58,24 +58,32 @@ class Post extends Component {
 		console.log(post);
 		return (
 			<Row className="post">
-				<Col xs={12} lg={3}>
-					<Glyphicon glyph="chevron-up" onClick={event => this.incrementPost(post)} />
-					<div className="post-voteScore">{post.voteScore}</div>
-					<Glyphicon glyph="chevron-down" onClick={event => this.decrementPost(post)} />
+				<Col xs={12} sm={2} md={1} className="post-voteScore">
+					<Glyphicon glyph="triangle-top" onClick={event => this.incrementPost(post)} />
+					<div>{post.voteScore}</div>
+					<Glyphicon glyph="triangle-bottom" onClick={event => this.decrementPost(post)} />
 				</Col>
-				<Col xs={12} lg={11} className="post-title">{post.title}</Col>
-				<Col xs={12} lg={11} className="post-timeStampAuthor">{formatDate(post.timestamp)} - {post.author}</Col>
-				<Col className="post-commentsCount">{post.commentCount} Comments</Col>
-				{postDetails ?
+				<Col xs={12} sm={8} md={10} className="vertical-align">
+					<div className="post-title">{post.title}</div>
+					<div className="post-timeStampAuthor">{formatDate(post.timestamp)} - {post.author}</div>
+					<div className="post-commentsCount">{post.commentCount} Comments</div>
+				</Col>
+				{postDetails &&
 					<div>
-						<Col xs={12} lg={11} className="post-body">{post.body}</Col>
+						<Col xs={12} sm={9} md={10} className="post-body">{post.body}</Col>
 						<ol className="posts-list">
 							{this.getPostComments(post.id).map(comment => (<Comment key={comment.id} comment={comment} />))}
 						</ol>
 					</div>
-					: <a href={`/${post.category}/${post.id}`}>Detail View</a>}
-				<a href={`/EditPost/${post.id}`}>Edit Post</a>
-				<div onClick={event => this.removePost(post.id)}>Delete Post</div>
+				}
+				<Col xs={12} sm={2} md={1} className="post-editDelete vertical-align">
+					<div>
+						<a href={`/EditPost/${post.id}`}><Glyphicon glyph="pencil" /></a>
+					</div>
+					<div>
+						<Glyphicon glyph="trash" onClick={event => this.removePost(post.id)} />
+					</div>
+				</Col>
 			</Row>
 		)
 	}
