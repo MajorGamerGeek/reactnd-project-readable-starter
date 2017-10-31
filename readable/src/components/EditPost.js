@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchPost, addPosts, editPost } from '../actions/Posts';
 import {
+  Button,
   Col,
   ControlLabel,
   Form,
@@ -17,12 +18,12 @@ class EditPost extends Component {
   componentDidMount() {
     const { dispatch } = this.props;
     const { post_id } = this.props.match.params;
-    
+
     if (post_id) {
       dispatch(fetchPost(post_id));
     }
   };
-  
+
   constructor(props) {
     super(props);
 
@@ -40,13 +41,14 @@ class EditPost extends Component {
     }
 
     this.handleFormChange = this.handleFormChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleFormChange(event) {
     const { id, value } = event.target;
     let formData = this.state.formData;
     formData[id] = value;
-    
+
     this.setState((state) => {
       return {
         ...state,
@@ -57,9 +59,34 @@ class EditPost extends Component {
     })
   }
 
+  handleSubmit() {
+    let formData = this.state.formData;
+    let validations = this.state.validations;
+    let formValid = true;
+
+    for (let key in formData) {
+      if (!formData[key] || formData[key].length === 0) {
+        validations[key] = 'error';
+        formValid = false;
+      } else {
+        validations[key] = 'success';
+      }
+    }
+
+    if (!formValid) {
+      this.setState({
+        ...this.state,
+        validations
+      });
+    }
+  }
+
   render() {
     let { author, title, category, body } = this.state.formData;
+    const { categories, post } = this.props;
 
+    console.log(categories);
+    console.log(post);
     return (
       <Form>
         <FormGroup controlId="title" validationState={this.state.validations.title}>
@@ -71,18 +98,18 @@ class EditPost extends Component {
               value={title}
               placeholder="Post title"
               onChange={this.handleFormChange} />
-          </Col>          
+          </Col>
         </FormGroup>
-        <FormGroup controlId="category" validationState={this.state.validations.body}>
+        <FormGroup controlId="category">
           <Col xs={1}>
             <ControlLabel>Category: </ControlLabel>
           </Col>
           <Col xs={12} md={11}>
             <FormControl
-            type="text"
-            value={category}
-            placeholder="Category"
-            onChange={this.handleFormChange} />
+              type="text"
+              value={category}
+              placeholder="Category"
+              onChange={this.handleFormChange} />
           </Col>
         </FormGroup>
         <FormGroup controlId="body" validationState={this.state.validations.body}>
@@ -98,26 +125,28 @@ class EditPost extends Component {
               placeholder="Enter Post Body" />
           </Col>
         </FormGroup>
-        <FormGroup controlId="author" validationState={this.state.validations.body}>
+        <FormGroup controlId="author" validationState={this.state.validations.author}>
           <Col xs={1}>
             <ControlLabel>Author: </ControlLabel>
           </Col>
           <Col xs={12} md={11}>
             <FormControl
-            type="text"
-            value={author}
-            placeholder="Author"
-            onChange={this.handleFormChange} />
+              type="text"
+              value={author}
+              placeholder="Author"
+              onChange={this.handleFormChange} />
           </Col>
         </FormGroup>
+        <Button bsStyle='success' onClick={this.handleSubmit}>Submit</Button>
       </Form>
+
     )
   }
 }
 
-function mapStateToProps() {
+function mapStateToProps(posts) {
   return {
-    
+    posts
   };
 };
 
