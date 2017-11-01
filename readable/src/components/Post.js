@@ -17,18 +17,37 @@ class Post extends Component {
 		}
 	};
 
-	removePost = (postId) => {
+	showPostDetails = (category, postId) => {
+		const { postDetails } = this.props;
+
+		if (!postDetails) {
+			window.location = `/${category}/${postId}`;
+		}
+	};
+
+	editPost = (event, postId) => {
+		event.stopPropagation();
+		window.location = `/EditPost/${postId}`;
+	};
+
+	removePost = (event, postId) => {
 		const { dispatch } = this.props;
+
+		event.stopPropagation();
 		dispatch(removePost(postId));
 	};
 
-	incrementPost = (post) => {
+	incrementPost = (event, post) => {
 		const { dispatch } = this.props;
+
+		event.stopPropagation();
 		dispatch(incrementPost(post));
 	};
 
-	decrementPost = (post) => {
+	decrementPost = (event, post) => {
 		const { dispatch } = this.props;
+
+		event.stopPropagation();
 		dispatch(decrementPost(post));
 	};
 
@@ -57,11 +76,11 @@ class Post extends Component {
 		const { post, postDetails } = this.props;
 		console.log(post);
 		return (
-			<Row className="post">
+			<Row className="post" onClick={() => this.showPostDetails(post.category, post.id)}>
 				<Col xs={12} sm={2} md={1} className="post-voteScore">
-					<Glyphicon glyph="triangle-top" onClick={event => this.incrementPost(post)} />
+					<Glyphicon glyph="triangle-top" onClick={event => this.incrementPost(event, post)} />
 					<div>{post.voteScore}</div>
-					<Glyphicon glyph="triangle-bottom" onClick={event => this.decrementPost(post)} />
+					<Glyphicon glyph="triangle-bottom" onClick={event => this.decrementPost(event, post)} />
 				</Col>
 				<Col xs={12} sm={8} md={10} className="vertical-align">
 					<div className="post-title">{post.title}</div>
@@ -69,19 +88,21 @@ class Post extends Component {
 					<div className="post-commentsCount">{post.commentCount} Comments</div>
 				</Col>
 				{postDetails &&
-					<div>
-						<Col xs={12} sm={9} md={10} className="post-body">{post.body}</Col>
+					<Col xs={12} sm={8} md={10} className="post-body">
+						<div>
+							{post.body}
+						</div>
 						<ol className="posts-list">
 							{this.getPostComments(post.id).map(comment => (<Comment key={comment.id} comment={comment} />))}
 						</ol>
-					</div>
+					</Col>
 				}
 				<Col xs={12} sm={2} md={1} className="post-editDelete vertical-align">
 					<div>
-						<a href={`/EditPost/${post.id}`}><Glyphicon glyph="pencil" /></a>
+						<Glyphicon glyph="pencil" onClick={event => this.editPost(event, post.id)} />
 					</div>
 					<div>
-						<Glyphicon glyph="trash" onClick={event => this.removePost(post.id)} />
+						<Glyphicon glyph="trash" onClick={event => this.removePost(event, post.id)} />
 					</div>
 				</Col>
 			</Row>

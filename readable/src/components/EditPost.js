@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { fetchCategories } from '../actions/Categories';
 import { fetchPost, addPosts, editPost } from '../actions/Posts';
 import {
   Button,
@@ -19,8 +20,10 @@ class EditPost extends Component {
     const { dispatch } = this.props;
     const { post_id } = this.props.match.params;
 
+    this.props.fetchCategories();
+
     if (post_id) {
-      dispatch(fetchPost(post_id));
+      this.props.fetchPost(post_id);
     }
   };
 
@@ -83,10 +86,10 @@ class EditPost extends Component {
 
   render() {
     let { author, title, category, body } = this.state.formData;
-    const { categories, post } = this.props;
+    const { posts, categories } = this.props;
 
     console.log(categories);
-    console.log(post);
+    console.log(posts);
     return (
       <Form>
         <FormGroup controlId="title" validationState={this.state.validations.title}>
@@ -139,15 +142,22 @@ class EditPost extends Component {
         </FormGroup>
         <Button bsStyle='success' onClick={this.handleSubmit}>Submit</Button>
       </Form>
-
     )
   }
 }
 
-function mapStateToProps(posts) {
+function mapStateToProps(posts, categories) {
   return {
-    posts
+    posts,
+    categories
   };
 };
 
-export default connect(mapStateToProps)(EditPost);
+function mapDispatchToProps(dispatch) {
+  return {
+    fetchCategories: () => dispatch(fetchCategories()),
+    fetchPost: (postId) => dispatch(fetchPost(postId))
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditPost);
