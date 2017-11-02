@@ -29,6 +29,7 @@ class App extends Component {
         <Switch>
           <Route exact path='/' render={(props) => (<Posts {...props} />)} />
           <Route exact path='/addpost' render={(props) => (<EditPost {...props} />)} />
+          <Route exact path='/addcomment/:post_id' render={(props) => (<EditPost {...props} />)} />
           <Route exact path='/editpost/:post_id' render={(props) => (<EditPost {...props} />)} />
           <Route exact path='/editpost/:post_id/:comment_id' render={(props) => (<EditPost {...props} />)} />
           <Route exact path='/:category' render={(props) => (<Posts {...props} />)} /> />

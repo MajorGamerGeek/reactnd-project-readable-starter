@@ -27,7 +27,7 @@ class Post extends Component {
 
 	editPost = (event, postId) => {
 		event.stopPropagation();
-		window.location = `/EditPost/${postId}`;
+		window.location = `/editpost/${postId}`;
 	};
 
 	removePost = (event, postId) => {
@@ -49,6 +49,11 @@ class Post extends Component {
 
 		event.stopPropagation();
 		dispatch(decrementPost(post));
+	};
+
+	addComment = (event, postId) => {
+		event.stopPropagation();
+		window.location = `/addcomment/${postId}`;
 	};
 
 	getPostComments = (postId) => {
@@ -78,9 +83,9 @@ class Post extends Component {
 		return (
 			<Row className="post" onClick={() => this.showPostDetails(post.category, post.id)}>
 				<Col xs={12} sm={2} md={1} className="post-voteScore">
-					<Glyphicon glyph="triangle-top" onClick={event => this.incrementPost(event, post)} />
+					<Glyphicon glyph="triangle-top" className="pointer" onClick={event => this.incrementPost(event, post)} />
 					<div>{post.voteScore}</div>
-					<Glyphicon glyph="triangle-bottom" onClick={event => this.decrementPost(event, post)} />
+					<Glyphicon glyph="triangle-bottom" className="pointer" onClick={event => this.decrementPost(event, post)} />
 				</Col>
 				<Col xs={12} sm={8} md={10} className="vertical-align">
 					<div className="post-title">{post.title}</div>
@@ -99,10 +104,13 @@ class Post extends Component {
 				}
 				<Col xs={12} sm={2} md={1} className="post-editDelete vertical-align">
 					<div>
-						<Glyphicon glyph="pencil" onClick={event => this.editPost(event, post.id)} />
+						<Glyphicon glyph="pencil" className="pointer" onClick={event => this.editPost(event, post.id)} />
 					</div>
 					<div>
-						<Glyphicon glyph="trash" onClick={event => this.removePost(event, post.id)} />
+						<Glyphicon glyph="trash" className="pointer" onClick={event => this.removePost(event, post.id)} />
+					</div>
+          <div>
+						<Glyphicon glyph="plus" className="pointer" onClick={event => this.addComment(event, post.id)} />
 					</div>
 				</Col>
 			</Row>

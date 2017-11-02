@@ -33,6 +33,10 @@
   margin-bottom: 5px;
 }
 
+.post:hover {
+  border-color: #0066cc;
+}
+
 .post-voteScore {
   font-size: 22px;
   text-align: center;
@@ -42,4 +46,26 @@
 .post-editDelete {
   font-size: 22px;
   text-align: center;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.comment {
+  border-width: 2px;
+  border-radius: 24px;
+  border-style: solid;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.comment-voteScore {
+  font-size: 16px;
+  text-align: center;
+  line-height: 1 !important;
+}
+
+.submitButton {
+  margin-top: 10px;
 }

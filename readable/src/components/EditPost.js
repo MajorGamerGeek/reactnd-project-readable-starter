@@ -140,7 +140,9 @@ class EditPost extends Component {
               onChange={this.handleFormChange} />
           </Col>
         </FormGroup>
-        <Button bsStyle='success' onClick={this.handleSubmit}>Submit</Button>
+        <Col xs={12} className="submitButton">
+          <Button bsStyle='success' onClick={this.handleSubmit}>Submit</Button>
+        </Col>
       </Form>
     )
   }
