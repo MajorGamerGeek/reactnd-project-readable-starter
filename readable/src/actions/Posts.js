@@ -30,10 +30,10 @@ export function deletePost(post) {
 	}
 };
 
-export function getPost(posts) {
+export function getPost(post) {
 	return {
 		type: GET_POST,
-		posts
+		post
 	}
 };
 
@@ -69,7 +69,7 @@ export function fetchPost(postId) {
 	return function (dispatch) {
 		API.getPost(postId)
 			.then((response) => response.json())
-			.then((posts) => dispatch(getPost(posts)));
+			.then((post) => dispatch(getPost(post)));
 	}
 };
 

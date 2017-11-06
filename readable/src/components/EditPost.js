@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { fetchCategories } from '../actions/Categories';
 import { fetchPost, addPosts, editPost } from '../actions/Posts';
 import {
@@ -13,20 +12,6 @@ import {
 } from 'react-bootstrap';
 
 class EditPost extends Component {
-  static propTypes = {
-  }
-
-  componentDidMount() {
-    const { dispatch } = this.props;
-    const { post_id } = this.props.match.params;
-
-    this.props.fetchCategories();
-
-    if (post_id) {
-      this.props.fetchPost(post_id);
-    }
-  };
-
   constructor(props) {
     super(props);
 
@@ -47,11 +32,21 @@ class EditPost extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentDidMount() {
+    const { dispatch } = this.props;
+    const { post_id } = this.props.match.params;
+
+    if (post_id) {
+      this.props.fetchPost(post_id).then(res => console.log(res));
+    }
+
+  };
+
   handleFormChange(event) {
     const { id, value } = event.target;
     let formData = this.state.formData;
     formData[id] = value;
-
+    
     this.setState((state) => {
       return {
         ...state,
@@ -68,6 +63,8 @@ class EditPost extends Component {
     let formValid = true;
 
     for (let key in formData) {
+      console.log(formData[key]);
+
       if (!formData[key] || formData[key].length === 0) {
         validations[key] = 'error';
         formValid = false;
@@ -86,10 +83,11 @@ class EditPost extends Component {
 
   render() {
     let { author, title, category, body } = this.state.formData;
-    const { posts, categories } = this.props;
+    let { post, categories } = this.props;
 
+    console.log(post);
     console.log(categories);
-    console.log(posts);
+
     return (
       <Form>
         <FormGroup controlId="title" validationState={this.state.validations.title}>
@@ -148,16 +146,15 @@ class EditPost extends Component {
   }
 }
 
-function mapStateToProps(posts, categories) {
+function mapStateToProps(post, categories) {
   return {
-    posts,
+    post,
     categories
   };
 };
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchCategories: () => dispatch(fetchCategories()),
     fetchPost: (postId) => dispatch(fetchPost(postId))
   };
 }

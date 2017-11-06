@@ -104,13 +104,13 @@ class Post extends Component {
 				}
 				<Col xs={12} sm={2} md={1} className="post-editDelete vertical-align">
 					<div>
+						<Glyphicon glyph="plus" className="pointer" onClick={event => this.addComment(event, post.id)} />
+					</div>
+					<div>
 						<Glyphicon glyph="pencil" className="pointer" onClick={event => this.editPost(event, post.id)} />
 					</div>
 					<div>
 						<Glyphicon glyph="trash" className="pointer" onClick={event => this.removePost(event, post.id)} />
-					</div>
-          <div>
-						<Glyphicon glyph="plus" className="pointer" onClick={event => this.addComment(event, post.id)} />
 					</div>
 				</Col>
 			</Row>

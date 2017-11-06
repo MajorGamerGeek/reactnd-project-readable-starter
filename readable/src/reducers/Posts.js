@@ -20,9 +20,9 @@ function posts(state = [], action) {
 				...state.filter(post => post.id !== action.post.id)
 			]
 		case GET_POST:
-			return [
-				...[action.posts].filter(post => post.deleted === false)
-			]
+			return {
+				...action.post
+			}
 		case GET_ALL_POSTS:
 			return [
 				...action.posts.filter(post => post.deleted === false)
