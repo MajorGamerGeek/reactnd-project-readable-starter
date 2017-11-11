@@ -2,14 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchCategories } from '../actions/Categories';
 import { fetchPost, addPosts, editPost } from '../actions/Posts';
-import {
-  Button,
-  Col,
-  ControlLabel,
-  Form,
-  FormControl,
-  FormGroup
-} from 'react-bootstrap';
+import { Button, Col, ControlLabel, Form, FormControl, FormGroup } from 'react-bootstrap';
 
 class EditPost extends Component {
   constructor(props) {
@@ -58,7 +51,7 @@ class EditPost extends Component {
   }
 
   handleSubmit() {
-    let formData = this.state.formData;
+    const formData = this.state.formData;
     let validations = this.state.validations;
     let formValid = true;
 
@@ -95,10 +88,7 @@ class EditPost extends Component {
             <ControlLabel>Title: </ControlLabel>
           </Col>
           <Col xs={12} md={11}>
-            <FormControl type="text"
-              value={title}
-              placeholder="Post title"
-              onChange={this.handleFormChange} />
+            <FormControl type="text" value={title} placeholder="Post title" onChange={this.handleFormChange} />
           </Col>
         </FormGroup>
         <FormGroup controlId="category">
@@ -119,11 +109,7 @@ class EditPost extends Component {
           </Col>
           <Col xs={12} md={11}>
             <FormControl
-              rows={10}
-              componentClass="textarea"
-              value={body}
-              onChange={this.handleFormChange}
-              placeholder="Enter Post Body" />
+              rows={10} componentClass="textarea" value={body} onChange={this.handleFormChange} placeholder="Enter Post Body" />
           </Col>
         </FormGroup>
         <FormGroup controlId="author" validationState={this.state.validations.author}>
@@ -131,11 +117,7 @@ class EditPost extends Component {
             <ControlLabel>Author: </ControlLabel>
           </Col>
           <Col xs={12} md={11}>
-            <FormControl
-              type="text"
-              value={author}
-              placeholder="Author"
-              onChange={this.handleFormChange} />
+            <FormControl type="text" value={author} placeholder="Author" onChange={this.handleFormChange} />
           </Col>
         </FormGroup>
         <Col xs={12} className="submitButton">

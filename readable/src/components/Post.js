@@ -5,6 +5,8 @@ import { Row, Col, Glyphicon } from 'react-bootstrap';
 import { removePost, incrementPost, decrementPost } from '../actions/Posts';
 import { fetchPostComments } from '../actions/Comments';
 import Comment from './Comment';
+import EditComment from './EditComment';
+import EditPost from './EditPost';
 import { formatDate } from '../utils/FormatDate';
 
 class Post extends Component {
