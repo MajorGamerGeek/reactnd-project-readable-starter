@@ -3,10 +3,17 @@ import {
 	GET_POST_COMMENTS,
 	DELETE_COMMENT,
 	UP_VOTE_COMMENT,
-	DOWN_VOTE_COMMENT
+	DOWN_VOTE_COMMENT,
+	OPEN_EDIT_COMMENT_MODAL,
+	CLOSE_EDIT_COMMENT_MODAL
 } from '../actions/Comments';
 
-function comments(state = {}, action) {
+const defaultCommentsState = {
+	comments: [],
+	showModal: false
+};
+
+function comments(state = defaultCommentsState, action) {
 	switch (action.type) {
 		case GET_COMMENT:
 			return {

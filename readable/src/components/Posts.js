@@ -14,7 +14,7 @@ class Posts extends Component {
   componentDidMount() {
     const { dispatch } = this.props;
     const { category, post_id } = this.props.match.params;
-    
+
     if (post_id) {
       this.setState({ postDetails: true });
       dispatch(fetchPost(post_id));
@@ -36,7 +36,7 @@ class Posts extends Component {
         return a.timestamp - b.timestamp;
       case 'TimeStampDesc':
         return b.timestamp - a.timestamp;
-      default: 
+      default:
         return 1;
     }
   });
@@ -44,18 +44,21 @@ class Posts extends Component {
   render() {
     const { dispatch, posts, sort } = this.props;
     const { postDetails, category } = this.state;
-    
+
+    console.log(posts);
+    console.log(sort);
+
     return (
       <Grid>
         <Row>
-        { postDetails === false &&
-          <select onChange={event => dispatch(sortBy(event.target.value))}>
-            <option value='VoteScoreAsc'>VoteScoreAsc</option>
-            <option value='VoteScoreDesc'>VoteScoreDesc</option>
-            <option value='TimestampAsc'>TimestampAsc</option>
-            <option value='TimestampDesc'>TimestampDesc</option>
-          </select>
-        }
+          {postDetails === false &&
+            <select onChange={event => dispatch(sortBy(event.target.value))}>
+              <option value='VoteScoreAsc'>VoteScoreAsc</option>
+              <option value='VoteScoreDesc'>VoteScoreDesc</option>
+              <option value='TimestampAsc'>TimestampAsc</option>
+              <option value='TimestampDesc'>TimestampDesc</option>
+            </select>
+          }
         </Row>
         <Row>
           {category && <div className="post-category">{category} Posts</div>}
@@ -68,7 +71,7 @@ class Posts extends Component {
 
 function mapStateToProps({ posts, sort }) {
   return {
-    posts,
+    posts: posts.posts,
     sort
   };
 };

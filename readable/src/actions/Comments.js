@@ -7,6 +7,8 @@ export const GET_COMMENT = 'GET_COMMENT';
 export const GET_POST_COMMENTS = 'GET_POST_COMMENTS';
 export const UP_VOTE_COMMENT = 'UP_VOTE_COMMENT';
 export const DOWN_VOTE_COMMENT = 'DOWN_VOTE_COMMENT';
+export const OPEN_EDIT_COMMENT_MODAL = 'OPEN_EDIT_COMMENT_MODAL';
+export const CLOSE_EDIT_COMMENT_MODAL = 'CLOSE_EDIT_COMMENT_MODAL';
 
 export function addComment(comments) {
 	return {
@@ -54,6 +56,19 @@ export function downVoteComment(comment) {
 	return {
 		type: DOWN_VOTE_COMMENT,
 		comment
+	}
+};
+
+export function openEditCommentModal(data) {
+	return {
+		type: OPEN_EDIT_COMMENT_MODAL,
+		data
+	}
+};
+
+export function closeEditCommentModal() {
+	return {
+		type: CLOSE_EDIT_COMMENT_MODAL
 	}
 };
 

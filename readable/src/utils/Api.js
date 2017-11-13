@@ -14,6 +14,14 @@ export const addPost = (option) =>
   }
 );
 
+export const editPost = (post) => 
+    fetch(`${api}/posts/${post.postId}`, {
+      headers,
+      method: 'PUT',
+      body: JSON.stringify({ id: post.id, title: post.title, body: post.body })
+    }
+);
+
 export const deletePost = (postId) =>
   fetch(`${api}/posts/${postId}`, {
     headers,

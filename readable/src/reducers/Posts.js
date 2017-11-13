@@ -5,50 +5,75 @@ import {
 	GET_CATEGORY_POSTS,
 	GET_ALL_POSTS,
 	UP_VOTE_POST,
-	DOWN_VOTE_POST
+	DOWN_VOTE_POST,
+	OPEN_EDIT_POST_MODAL,
+	CLOSE_EDIT_POST_MODAL
 } from '../actions/Posts';
 
-function posts(state = [], action) {
+const defaultPostsState = {
+	posts: [],
+	showModal: false
+};
+
+function posts(state = defaultPostsState, action) {
 	switch (action.type) {
 		case ADD_POST:
 			console.log(action);
 			return {
-				posts: action.post
-			}
+				...state,
+				posts: [action.post]
+			};
 		case DELETE_POST:
-			return [
-				...state.filter(post => post.id !== action.post.id)
-			]
+			return {
+				...state,
+				posts: state.posts.filter(post => post.id !== action.post.id)
+			};
 		case GET_POST:
 			return {
-				...action.post
-			}
+				...state,
+				posts: [action.post]
+			};
 		case GET_ALL_POSTS:
-			return [
-				...action.posts.filter(post => post.deleted === false)
-			]
+			return {
+				...state,
+				posts: action.posts.filter(post => post.deleted === false)
+			};
 		case GET_CATEGORY_POSTS:
-			return [
-				...action.posts.filter(post => post.deleted === false)
-			]
+			return {
+				...state,
+				posts: action.posts.filter(post => post.deleted === false)
+			};
 		case UP_VOTE_POST:
-			return [
-				...state.map((post) => {
+			return {
+				...state,
+				posts: state.posts.map((post) => {
 					if (post.id === action.posts.id) {
-							return action.posts
+						return action.posts
 					}
 					return post;
 				})
-			]
+			};
 		case DOWN_VOTE_POST:
-		return [
-			...state.map((post) => {
-				if (post.id === action.posts.id) {
+			return {
+				...state,
+				posts: state.posts.map((post) => {
+					if (post.id === action.posts.id) {
 						return action.posts
-				}
-				return post;
-			})
-			]
+					}
+					return post;
+				})
+			};
+		case OPEN_EDIT_POST_MODAL:
+			return {
+				...state,
+				posts: [action.post],
+				showModal: true
+			};
+		case CLOSE_EDIT_POST_MODAL:
+			return {
+				...state,
+				showModal: false
+			};
 		default:
 			return state;
 	}

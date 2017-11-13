@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchCategories } from '../actions/Categories';
-import { fetchPost, addPosts, editPost } from '../actions/Posts';
-import { Button, Col, ControlLabel, Form, FormControl, FormGroup } from 'react-bootstrap';
+import PropTypes from 'prop-types';
+import { addPosts, editPost, closeEditPostModal } from '../actions/Posts';
+import { Button, Clearfix,  Col, ControlLabel, Form, FormControl, FormGroup, Modal } from 'react-bootstrap';
 
 class EditPost extends Component {
+  static propTypes = {
+    post: PropTypes.object,
+    editPost: PropTypes.bool.isRequired,
+    showModal: PropTypes.bool.isRequired
+  }
+
   constructor(props) {
     super(props);
 
@@ -26,20 +32,24 @@ class EditPost extends Component {
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
-    const { post_id } = this.props.match.params;
+    const { editPost, post } = this.props;
 
-    if (post_id) {
-      this.props.fetchPost(post_id).then(res => console.log(res));
+    if (editPost) {
+      this.setState((state) => ({
+        ...state,
+        formData: {
+          ...state.formData,
+          ...post
+        }
+      }));
     }
-
   };
 
   handleFormChange(event) {
     const { id, value } = event.target;
     let formData = this.state.formData;
     formData[id] = value;
-    
+
     this.setState((state) => {
       return {
         ...state,
@@ -51,6 +61,7 @@ class EditPost extends Component {
   }
 
   handleSubmit() {
+    const { editPost, post } = this.props;
     const formData = this.state.formData;
     let validations = this.state.validations;
     let formValid = true;
@@ -66,7 +77,13 @@ class EditPost extends Component {
       }
     }
 
-    if (!formValid) {
+    if (formValid) {
+      if (editPost) {
+        this.props.editPost({ ...formData, postId: this.props.postToEdit.id }); 
+      } else { 
+        this.props.addPost(formData); 
+      }
+    } else {
       this.setState({
         ...this.state,
         validations
@@ -74,71 +91,74 @@ class EditPost extends Component {
     }
   }
 
+  closeModal = () => {
+    const { dispatch } = this.props;
+		dispatch(closeEditPostModal());
+	};
+
   render() {
     let { author, title, category, body } = this.state.formData;
-    let { post, categories } = this.props;
+    let { post, categories, showModal } = this.props;
 
     console.log(post);
     console.log(categories);
 
     return (
-      <Form>
-        <FormGroup controlId="title" validationState={this.state.validations.title}>
-          <Col xs={1}>
-            <ControlLabel>Title: </ControlLabel>
-          </Col>
-          <Col xs={12} md={11}>
-            <FormControl type="text" value={title} placeholder="Post title" onChange={this.handleFormChange} />
-          </Col>
-        </FormGroup>
-        <FormGroup controlId="category">
-          <Col xs={1}>
-            <ControlLabel>Category: </ControlLabel>
-          </Col>
-          <Col xs={12} md={11}>
-            <FormControl
-              type="text"
-              value={category}
-              placeholder="Category"
-              onChange={this.handleFormChange} />
-          </Col>
-        </FormGroup>
-        <FormGroup controlId="body" validationState={this.state.validations.body}>
-          <Col xs={1}>
-            <ControlLabel>Body: </ControlLabel>
-          </Col>
-          <Col xs={12} md={11}>
-            <FormControl
-              rows={10} componentClass="textarea" value={body} onChange={this.handleFormChange} placeholder="Enter Post Body" />
-          </Col>
-        </FormGroup>
-        <FormGroup controlId="author" validationState={this.state.validations.author}>
-          <Col xs={1}>
-            <ControlLabel>Author: </ControlLabel>
-          </Col>
-          <Col xs={12} md={11}>
-            <FormControl type="text" value={author} placeholder="Author" onChange={this.handleFormChange} />
-          </Col>
-        </FormGroup>
-        <Col xs={12} className="submitButton">
+      <Modal show={showModal} bsSize="large" onHide={this.closeModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Post</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <FormGroup controlId="title" validationState={this.state.validations.title}>
+              <Col xs={1}>
+                <ControlLabel>Title: </ControlLabel>
+              </Col>
+              <Col xs={12} md={11}>
+                <FormControl type="text" value={title} placeholder="Post title" onChange={this.handleFormChange} />
+              </Col>
+            </FormGroup>
+            <FormGroup controlId="category">
+              <Col xs={1}>
+                <ControlLabel>Category: </ControlLabel>
+              </Col>
+              <Col xs={12} md={11}>
+                <FormControl type="text" value={category} placeholder="Category" onChange={this.handleFormChange} />
+              </Col>
+            </FormGroup>
+            <FormGroup controlId="body" validationState={this.state.validations.body}>
+              <Col xs={1}>
+                <ControlLabel>Body: </ControlLabel>
+              </Col>
+              <Col xs={12} md={11}>
+                <FormControl
+                  rows={10} componentClass="textarea" value={body} onChange={this.handleFormChange} placeholder="Enter Post Body" />
+              </Col>
+            </FormGroup>
+            <FormGroup controlId="author" validationState={this.state.validations.author}>
+              <Col xs={1}>
+                <ControlLabel>Author: </ControlLabel>
+              </Col>
+              <Col xs={12} md={11}>
+                <FormControl type="text" value={author} placeholder="Author" onChange={this.handleFormChange} />
+              </Col>
+            </FormGroup>
+            <Clearfix />
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button bsStyle='danger' onClick={this.closeModal}>Cancel</Button>
           <Button bsStyle='success' onClick={this.handleSubmit}>Submit</Button>
-        </Col>
-      </Form>
+        </Modal.Footer>
+      </Modal>
     )
   }
 }
 
-function mapStateToProps(post, categories) {
+function mapStateToProps(categories) {
   return {
-    post,
-    categories
+    categories: categories.categories
   };
 };
 
-function mapDispatchToProps(dispatch) {
-  return {
-    fetchPost: (postId) => dispatch(fetchPost(postId))
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(EditPost);
+export default connect(mapStateToProps)(EditPost);
