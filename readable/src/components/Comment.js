@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Row, Col, Glyphicon } from 'react-bootstrap';
-import { incrementComment, decrementComment, removeComment } from '../actions/Comments';
+import { incrementComment, decrementComment, removeComment, openEditCommentModal } from '../actions/Comments';
 import { formatDate } from '../utils/FormatDate';
+import EditComment from './EditComment';
 
 class Comment extends Component {
   static propTypes = {
@@ -20,9 +21,11 @@ class Comment extends Component {
     dispatch(decrementComment(comment));
   };
   
-  editComment = (event, postId, commentId) => {
-		event.stopPropagation();
-		window.location = `/editpost/${postId}/${commentId}`;
+  editComment = (event, comment) => {
+      const { dispatch } = this.props;
+      
+      event.stopPropagation();
+      dispatch(openEditCommentModal(comment));
   };
   
   removeComment = (comment) => {
@@ -31,7 +34,7 @@ class Comment extends Component {
   }
 
   render() {
-    const { comment } = this.props;
+    const { comment, showModal } = this.props;
 
     console.log(comment);
 
@@ -48,12 +51,13 @@ class Comment extends Component {
         </Col>
         <Col xs={12} sm={2} md={1}>
           <div>
-            <Glyphicon glyph="pencil" className="pointer" onClick={event => this.editComment(event, comment.parentId, comment.id)} />
+            <Glyphicon glyph="pencil" className="pointer" onClick={event => this.editComment(event, comment)} />
           </div>
           <div>
             <Glyphicon glyph="trash" className="pointer" onClick={event => this.removeComment(comment)} />
           </div>
         </Col>
+        {showModal && <EditComment showModal={showModal} comment={comment} editComment={true} />}
       </Row>
     )
   }
@@ -61,7 +65,8 @@ class Comment extends Component {
 
 function mapStateToProps({ comments }) {
   return {
-    comments
+    showModal: comments.showModal,
+		comments: comments.comments
   };
 };
 

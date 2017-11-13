@@ -59,10 +59,10 @@ export function downVoteComment(comment) {
 	}
 };
 
-export function openEditCommentModal(data) {
+export function openEditCommentModal(comment) {
 	return {
 		type: OPEN_EDIT_COMMENT_MODAL,
-		data
+		comment
 	}
 };
 

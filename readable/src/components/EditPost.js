@@ -79,7 +79,7 @@ class EditPost extends Component {
 
     if (formValid) {
       if (editPost) {
-        this.props.editPost({ ...formData, postId: this.props.postToEdit.id }); 
+        this.props.editPost({ ...formData, post }); 
       } else { 
         this.props.addPost(formData); 
       }
@@ -98,7 +98,7 @@ class EditPost extends Component {
 
   render() {
     let { author, title, category, body } = this.state.formData;
-    let { post, categories, showModal } = this.props;
+    let { post, categories, editPost, showModal } = this.props;
 
     console.log(post);
     console.log(categories);
@@ -123,7 +123,7 @@ class EditPost extends Component {
                 <ControlLabel>Category: </ControlLabel>
               </Col>
               <Col xs={12} md={11}>
-                <FormControl type="text" value={category} placeholder="Category" onChange={this.handleFormChange} />
+                <FormControl type="text" disabled={editPost} value={category} placeholder="Category" onChange={this.handleFormChange} />
               </Col>
             </FormGroup>
             <FormGroup controlId="body" validationState={this.state.validations.body}>

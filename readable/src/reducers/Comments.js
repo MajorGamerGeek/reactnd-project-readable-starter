@@ -17,12 +17,14 @@ function comments(state = defaultCommentsState, action) {
 	switch (action.type) {
 		case GET_COMMENT:
 			return {
-				...action.comment
+				...state,
+				comments: [action.comment]
 			}
 		case GET_POST_COMMENTS:
-			return [
-				...action.comments
-			]
+			return {
+				...state,
+				comments: [action.comments]
+			}
 		case DELETE_COMMENT:
 			return [
 				...state.filter(comment => comment.id !== action.comment.id)
@@ -45,6 +47,17 @@ function comments(state = defaultCommentsState, action) {
 					return comment
 				})
 			]
+		case OPEN_EDIT_COMMENT_MODAL:
+			return {
+				...state,
+				comments: [action.comment],
+				showModal: true
+			};
+		case CLOSE_EDIT_COMMENT_MODAL:
+			return {
+				...state,
+				showModal: false
+			};
 		default:
 			return state;
 	}

@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Button, Col, Form, FormControl, ControlLabel, FormGroup, Modal, Clearfix } from 'react-bootstrap';
-import { addComment, editComment } from '../actions/Comments';
+import { addComment, editComment, closeEditCommentModal } from '../actions/Comments';
 
 class EditComment extends Component {
   static propTypes = {
+    comment: PropTypes.object,
     editComment: PropTypes.bool.isRequired,
-    comment: PropTypes.object
+    showModal: PropTypes.bool.isRequired
   }
 
 
@@ -41,15 +42,19 @@ class EditComment extends Component {
   }
 
   handleSubmit() {
-    
   }
 
+  closeModal = () => {
+    const { dispatch } = this.props;
+		dispatch(closeEditCommentModal());
+  };
+  
   render() {
-    const { editFlag } = this.props;
+    const { editComment, showModal } = this.props;
     const { author, body } = this.state.formData;
 
     return (
-      <Modal bsSize="large">
+      <Modal show={showModal} bsSize="large" onHide={this.closeModal}>
         <Modal.Header closeButton>
           <Modal.Title>Comment</Modal.Title>
         </Modal.Header>
@@ -60,7 +65,7 @@ class EditComment extends Component {
                 <ControlLabel>Author </ControlLabel>
               </Col>
               <Col xs={10}>
-                <FormControl type='text' disabled={editFlag} placeholder='Comment author' value={author} onChange={this.handleChange} />
+                <FormControl type='text' disabled={editComment} placeholder='Comment author' value={author} onChange={this.handleChange} />
               </Col>
             </FormGroup>
             <FormGroup validationState={this.state.validations.body} controlId="body">
@@ -75,7 +80,7 @@ class EditComment extends Component {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button bsStyle='danger'>Cancel</Button>
+          <Button bsStyle='danger' onClick={this.closeModal}>Cancel</Button>
           <Button bsStyle='success' onClick={this.handleSubmit}>Submit</Button>
         </Modal.Footer>
       </Modal>

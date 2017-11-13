@@ -5,7 +5,6 @@ import { Row, Col, Glyphicon } from 'react-bootstrap';
 import { removePost, incrementPost, decrementPost, openEditPostModal } from '../actions/Posts';
 import { fetchPostComments } from '../actions/Comments';
 import Comment from './Comment';
-import EditComment from './EditComment';
 import EditPost from './EditPost';
 import { formatDate } from '../utils/FormatDate';
 
@@ -30,7 +29,6 @@ class Post extends Component {
 	editPost = (event, post) => {
 		const { dispatch } = this.props;
 
-		console.log(post);
 		event.stopPropagation();
 		dispatch(openEditPostModal(post));
 	};
@@ -66,6 +64,8 @@ class Post extends Component {
 		let postComments = [];
 
 		if (Array.isArray(comments)) {
+			console.log(comments);
+			console.log(postId);
 			postComments = comments.map((comment) => {
 				if (comment.parentId === postId) {
 					return comment;
@@ -121,7 +121,7 @@ class Post extends Component {
 						</div>
 					</Col>
 				</Row>
-					{showModal && <EditPost showModal={showModal} post={post} />}
+				{showModal && <EditPost showModal={showModal} post={post} editPost={true} />}
 			</div>
 		)
 	}
@@ -131,7 +131,7 @@ function mapStateToProps({ posts, comments }) {
 	return {
 		posts: posts.posts,
 		showModal: posts.showModal,
-		comments
+		comments: comments.comments
 	};
 };
 
