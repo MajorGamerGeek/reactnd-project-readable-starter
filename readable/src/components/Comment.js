@@ -24,6 +24,8 @@ class Comment extends Component {
   editComment = (event, comment) => {
       const { dispatch } = this.props;
       
+      console.log(comment);
+
       event.stopPropagation();
       dispatch(openEditCommentModal(comment));
   };

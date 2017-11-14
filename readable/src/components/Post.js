@@ -60,20 +60,14 @@ class Post extends Component {
 	};
 
 	getPostComments = (postId) => {
-		const { comments } = this.props;
+		let { comments } = this.props;
 		let postComments = [];
 
 		if (Array.isArray(comments)) {
-			console.log(comments);
-			console.log(postId);
-			postComments = comments.map((comment) => {
-				if (comment.parentId === postId) {
-					return comment;
-				}
-				return [];
-			});
+		  postComments = comments.filter((comment) => (comment.parentId === postId));
 		}
 
+		console.log(postComments);
 		return postComments;
 	};
 

@@ -6,14 +6,31 @@ import { addComment, editComment, closeEditCommentModal } from '../actions/Comme
 
 class EditComment extends Component {
   static propTypes = {
-    comment: PropTypes.object,
     editComment: PropTypes.bool.isRequired,
     showModal: PropTypes.bool.isRequired
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      formData: {
+        author: 'anonymous',
+        body: ''
+      },
+      validations: {
+        author: null,
+        body: null
+      }
+    }
+
   }
 
 
   componentDidMount() {
     const { comment, editComment } = this.props;
+
+    console.log(comment);
 
     if (editComment) {
       this.setState((state) => ({
@@ -56,7 +73,7 @@ class EditComment extends Component {
     return (
       <Modal show={showModal} bsSize="large" onHide={this.closeModal}>
         <Modal.Header closeButton>
-          <Modal.Title>Comment</Modal.Title>
+          <Modal.Title>Edit Comment</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form horizontal>
