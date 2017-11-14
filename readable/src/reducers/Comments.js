@@ -65,7 +65,7 @@ function comments(state = defaultCommentsState, action) {
 			};
 		default:
 			return state;
-	};
+	}
 };
 
 export default comments;

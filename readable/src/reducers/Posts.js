@@ -76,7 +76,7 @@ function posts(state = defaultPostsState, action) {
 			};
 		default:
 			return state;
-	};
+	}
 };
 
 export default posts;

@@ -59,7 +59,7 @@ class Comment extends Component {
             <Glyphicon glyph="trash" className="pointer" onClick={event => this.removeComment(comment)} />
           </div>
         </Col>
-        {showModal && <EditComment showModal={showModal} editComment={true} />}
+        {showModal && <EditComment showModal={showModal} comment={comment} editComment={true} />}
       </Row>
     )
   }
