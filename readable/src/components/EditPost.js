@@ -6,7 +6,7 @@ import { Button, Clearfix,  Col, ControlLabel, Form, FormControl, FormGroup, Mod
 
 class EditPost extends Component {
   static propTypes = {
-    post: PropTypes.object,
+    postToEdit: PropTypes.object,
     editPost: PropTypes.bool.isRequired,
     showModal: PropTypes.bool.isRequired
   }
@@ -32,14 +32,14 @@ class EditPost extends Component {
   }
 
   componentDidMount() {
-    const { editPost, post } = this.props;
+    const { editPost, postToEdit } = this.props;
 
     if (editPost) {
       this.setState((state) => ({
         ...state,
         formData: {
           ...state.formData,
-          ...post
+          ...postToEdit
         }
       }));
     }
@@ -61,7 +61,7 @@ class EditPost extends Component {
   }
 
   handleSubmit() {
-    const { editPost, post } = this.props;
+    const { editPost, postToEdit } = this.props;
     const formData = this.state.formData;
     let validations = this.state.validations;
     let formValid = true;
@@ -79,7 +79,7 @@ class EditPost extends Component {
 
     if (formValid) {
       if (editPost) {
-        this.props.editPost({ ...formData, post }); 
+        this.props.editPost({ ...formData, postToEdit }); 
       } else { 
         this.props.addPost(formData); 
       }
@@ -98,9 +98,8 @@ class EditPost extends Component {
 
   render() {
     let { author, title, category, body } = this.state.formData;
-    let { post, categories, editPost, showModal } = this.props;
+    let { categories, editPost, showModal } = this.props;
 
-    console.log(post);
     console.log(categories);
 
     return (

@@ -9,6 +9,11 @@ import EditPost from './EditPost';
 import { formatDate } from '../utils/FormatDate';
 
 class Post extends Component {
+	constructor(props) {
+		super(props);
+		this.editPost = this.editPost.bind(this);
+	}
+
 	componentDidMount() {
 		const { postDetails } = this.props;
 
@@ -64,7 +69,7 @@ class Post extends Component {
 		let postComments = [];
 
 		if (Array.isArray(comments)) {
-		  postComments = comments.filter((comment) => (comment.parentId === postId));
+			postComments = comments.filter((comment) => (comment.parentId === postId));
 		}
 
 		console.log(postComments);
@@ -115,7 +120,7 @@ class Post extends Component {
 						</div>
 					</Col>
 				</Row>
-				{showModal && <EditPost showModal={showModal} post={post} editPost={true} />}
+				{showModal && <EditPost showModal={showModal} postToEdit={post} editPost={true} />}
 			</div>
 		)
 	}
@@ -124,7 +129,6 @@ class Post extends Component {
 function mapStateToProps({ posts, comments }) {
 	return {
 		posts: posts.posts,
-		showModal: posts.showModal,
 		comments: comments.comments
 	};
 };

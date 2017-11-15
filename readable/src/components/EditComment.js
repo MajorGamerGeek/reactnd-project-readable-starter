@@ -6,6 +6,7 @@ import { addComment, editComment, closeEditCommentModal } from '../actions/Comme
 
 class EditComment extends Component {
   static propTypes = {
+    commentToEdit: PropTypes.object,
     editComment: PropTypes.bool.isRequired,
     showModal: PropTypes.bool.isRequired
   }
@@ -23,21 +24,20 @@ class EditComment extends Component {
         body: null
       }
     }
-
   }
 
 
   componentDidMount() {
-    const { comment, editComment } = this.props;
+    const { commentToEdit, editComment } = this.props;
 
-    console.log(comment);
+    console.log(commentToEdit);
 
     if (editComment) {
       this.setState((state) => ({
         ...state,
         formData: {
           ...state.formData,
-          ...comment
+          ...commentToEdit
         }
       }))
     }

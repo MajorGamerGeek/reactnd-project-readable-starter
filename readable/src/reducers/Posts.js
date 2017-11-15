@@ -12,6 +12,7 @@ import {
 
 const defaultPostsState = {
 	posts: [],
+	postToEdit: [],
 	showModal: false
 };
 
@@ -66,7 +67,7 @@ function posts(state = defaultPostsState, action) {
 		case OPEN_EDIT_POST_MODAL:
 			return {
 				...state,
-				posts: [action.post],
+				postToEdit: [action.post],
 				showModal: true
 			};
 		case CLOSE_EDIT_POST_MODAL:
