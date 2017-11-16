@@ -6,6 +6,7 @@ import { Nav, NavItem } from 'react-bootstrap';
 import { fetchCategories } from '../actions/Categories';
 import Posts from './Posts';
 import EditPost from './EditPost';
+import EditComment from './EditComment';
 import '../App.css';
 
 class App extends Component {
@@ -28,8 +29,8 @@ class App extends Component {
         </div>
         <Switch>
           <Route exact path='/' render={(props) => (<Posts {...props} />)} />
-          <Route exact path='/addpost' render={(props) => (<EditPost {...props} />)} />
-          <Route exact path='/addcomment/:post_id' render={(props) => (<EditPost {...props} />)} />
+          <Route exact path='/addpost' render={(props) => (<EditPost editPost={false} showModal={true} {...props} />)} />
+          <Route exact path='/addcomment/:post_id' render={(props) => (<EditComment editComment={false} showModal={true} {...props} />)} />
           <Route exact path='/editpost/:post_id' render={(props) => (<EditPost {...props} />)} />
           <Route exact path='/editpost/:post_id/:comment_id' render={(props) => (<EditPost {...props} />)} />
           <Route exact path='/:category' render={(props) => (<Posts {...props} />)} /> />

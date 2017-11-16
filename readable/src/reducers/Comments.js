@@ -9,19 +9,19 @@ import {
 } from '../actions/Comments';
 
 const defaultCommentsState = {
-	comments: [],
-	comment: [],
-	showModal: false
+	comments: []
 };
 
 function comments(state = defaultCommentsState, action) {
 	switch (action.type) {
 		case GET_COMMENT:
+			action.comment.map(comment => (comment.showModal = false));
 			return {
 				...state,
 				comments: action.comment
 			};
 		case GET_POST_COMMENTS:
+			action.comments.map(comment => (comment.showModal = false));
 			return {
 				...state,
 				comments: action.comments
@@ -52,16 +52,22 @@ function comments(state = defaultCommentsState, action) {
 				})
 			};
 		case OPEN_EDIT_COMMENT_MODAL:
-			console.log(action.comment);
 			return {
 				...state,
-				comment: action.comment,
-				showModal: true
+				comments: state.comments.map((comment) => {
+					if (comment.id === action.comment.id) {
+						comment.showModal = true;
+					}
+					return comment;
+				}) 
 			};
 		case CLOSE_EDIT_COMMENT_MODAL:
 			return {
 				...state,
-				showModal: false
+				comments: state.comments.map((comment) => {
+					comment.showModal = false;
+					return comment;
+				})
 			};
 		default:
 			return state;

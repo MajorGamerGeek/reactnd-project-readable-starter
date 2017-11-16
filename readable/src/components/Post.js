@@ -72,7 +72,6 @@ class Post extends Component {
 			postComments = comments.filter((comment) => (comment.parentId === postId));
 		}
 
-		console.log(postComments);
 		return postComments;
 	};
 
@@ -82,9 +81,8 @@ class Post extends Component {
 	}
 
 	render() {
-		const { post, postDetails, showModal } = this.props;
+		const { post, postDetails } = this.props;
 		console.log(post);
-		console.log(showModal);
 		return (
 			<div>
 				<Row className="post" onClick={() => this.showPostDetails(post.category, post.id)}>
@@ -120,7 +118,7 @@ class Post extends Component {
 						</div>
 					</Col>
 				</Row>
-				{showModal && <EditPost showModal={showModal} postToEdit={post} editPost={true} />}
+				{post.showModal && <EditPost showModal={post.showModal} postToEdit={post} editPost={true} />}
 			</div>
 		)
 	}

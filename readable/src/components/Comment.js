@@ -36,9 +36,7 @@ class Comment extends Component {
   }
 
   render() {
-    const { comment, showModal } = this.props;
-
-    console.log(comment);
+    const { comment } = this.props;
 
     return (
       <Row className="comment">
@@ -59,7 +57,7 @@ class Comment extends Component {
             <Glyphicon glyph="trash" className="pointer" onClick={event => this.removeComment(comment)} />
           </div>
         </Col>
-        {showModal && <EditComment showModal={showModal} commentToEdit={comment} editComment={true} />}
+        {comment.showModal && <EditComment showModal={comment.showModal} commentToEdit={comment} editComment={true} />}
       </Row>
     )
   }
@@ -67,7 +65,6 @@ class Comment extends Component {
 
 function mapStateToProps({ comments }) {
   return {
-    showModal: comments.showModal,
 		comments: comments.comments
   };
 };

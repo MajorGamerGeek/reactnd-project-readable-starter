@@ -11,9 +11,7 @@ import {
 } from '../actions/Posts';
 
 const defaultPostsState = {
-	posts: [],
-	postToEdit: [],
-	showModal: false
+	posts: []
 };
 
 function posts(state = defaultPostsState, action) {
@@ -30,11 +28,13 @@ function posts(state = defaultPostsState, action) {
 				posts: state.posts.filter(post => post.id !== action.post.id)
 			};
 		case GET_POST:
+			[action.post].map(post => (post.showModal = false));
 			return {
 				...state,
 				posts: [action.post]
 			};
 		case GET_ALL_POSTS:
+			action.posts.map(post => (post.showModal = false));
 			return {
 				...state,
 				posts: action.posts.filter(post => post.deleted === false)
@@ -67,13 +67,20 @@ function posts(state = defaultPostsState, action) {
 		case OPEN_EDIT_POST_MODAL:
 			return {
 				...state,
-				postToEdit: [action.post],
-				showModal: true
+				posts: state.posts.map((post) => {
+					if (post.id === action.post.id) {
+						post.showModal = true;
+					}
+					return post;
+				}) 
 			};
 		case CLOSE_EDIT_POST_MODAL:
 			return {
 				...state,
-				showModal: false
+				posts: state.posts.map((post) => {
+					post.showModal = false;
+					return post;
+				}) 
 			};
 		default:
 			return state;
