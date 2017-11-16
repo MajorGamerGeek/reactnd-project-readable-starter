@@ -73,8 +73,9 @@ class Post extends Component {
 	}
 
 	render() {
-		const { post, postDetails } = this.props;
+		const { post, postDetails, postToEdit, showModal } = this.props;
 		console.log(post);
+		console.log(showModal);
 		return (
 			<div>
 				<Row className="post" onClick={() => this.showPostDetails(post.category, post.id)}>
@@ -110,7 +111,7 @@ class Post extends Component {
 						</div>
 					</Col>
 				</Row>
-				{post.showModal && <EditPost showModal={post.showModal} postToEdit={post} editPost={true} />}
+				{showModal && <EditPost showModal={showModal} postToEdit={postToEdit} editPost={true} />}
 			</div>
 		)
 	}
@@ -119,7 +120,9 @@ class Post extends Component {
 function mapStateToProps({ posts, comments }) {
 	return {
 		posts: posts.posts,
-		comments: comments.comments
+		comments: comments.comments,
+		showModal: posts.showModal,
+		postToEdit: posts.postToEdit
 	};
 };
 

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { addPosts, editPost, closeEditPostModal } from '../actions/Posts';
 import { Button, Clearfix,  Col, ControlLabel, Form, FormControl, FormGroup, Modal } from 'react-bootstrap';
+import { editComment } from '../actions/Comments';
 
 class EditPost extends Component {
   static propTypes = {
@@ -92,8 +93,10 @@ class EditPost extends Component {
   }
 
   closeModal = () => {
-    const { dispatch } = this.props;
-		dispatch(closeEditPostModal());
+    this.props.closeEditPostModal();
+    if (!this.props.editPost) {
+      window.location = `/`;
+    }
 	};
 
   render() {
@@ -157,4 +160,10 @@ function mapStateToProps(categories) {
   };
 };
 
-export default connect(mapStateToProps)(EditPost);
+function mapDispatchToProps(dispatch) {
+  return {
+    closeEditPostModal: () => dispatch(closeEditPostModal())
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditPost);
