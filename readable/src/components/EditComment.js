@@ -24,6 +24,9 @@ class EditComment extends Component {
         body: null
       }
     }
+
+    this.handleFormChange = this.handleFormChange.bind(this);
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
 
@@ -55,17 +58,35 @@ class EditComment extends Component {
           ...formData
         }
       }
-    })
-  }
+    });
+  };
 
-  handleSubmit() {
-  }
+  handleFormSubmit() {
+    let validationFlag = true;
+    let formData = this.state.formData;
+    let validations = this.state.validations;
+
+    for (let key in formData) {
+      if (!formData[key] || formData[key].length === 0) {
+        validations[key] = 'error';
+        validationFlag = false;
+      } else validations[key] = 'success';
+    }
+
+    if (!validationFlag) this.setState({
+      ...this.state,
+      validations
+    })
+    else {
+      if (this.props.editFlag) this.props.editComment({ ...formData, commentId: this.props.commentToEdit.id });
+      else this.props.addComment({ ...formData, parentId: this.props.parentId });
+    }
+  };
 
   closeModal = () => {
-    const { dispatch } = this.props;
-		dispatch(closeEditCommentModal());
+    this.props.closeEditCommentModal();
   };
-  
+
   render() {
     const { editComment, showModal } = this.props;
     const { author, body } = this.state.formData;
@@ -82,7 +103,7 @@ class EditComment extends Component {
                 <ControlLabel>Author </ControlLabel>
               </Col>
               <Col xs={10}>
-                <FormControl type='text' disabled={editComment} placeholder='Comment author' value={author} onChange={this.handleChange} />
+                <FormControl type='text' disabled={editComment} placeholder='Comment author' value={author} onChange={this.handleFormChange} />
               </Col>
             </FormGroup>
             <FormGroup validationState={this.state.validations.body} controlId="body">
@@ -90,7 +111,7 @@ class EditComment extends Component {
                 <ControlLabel>Body</ControlLabel>
               </Col>
               <Col xs={11}>
-                <FormControl rows={10} componentClass="textarea" placeholder="Enter comment body" value={body} onChange={this.handleChange} />
+                <FormControl rows={10} componentClass="textarea" placeholder="Enter comment" value={body} onChange={this.handleFormChange} />
               </Col>
             </FormGroup>
             <Clearfix />
@@ -98,16 +119,22 @@ class EditComment extends Component {
         </Modal.Body>
         <Modal.Footer>
           <Button bsStyle='danger' onClick={this.closeModal}>Cancel</Button>
-          <Button bsStyle='success' onClick={this.handleSubmit}>Submit</Button>
+          <Button bsStyle='success' onClick={this.handleFormSubmit}>Submit</Button>
         </Modal.Footer>
       </Modal>
     )
   }
-}
+};
 
 function mapStateToProps() {
   return {
   };
 };
 
-export default connect(mapStateToProps)(EditComment);
+function mapDispatchToProps(dispatch) {
+  return {
+    closeEditCommentModal: () => dispatch(closeEditCommentModal())
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditComment);

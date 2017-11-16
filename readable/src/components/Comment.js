@@ -12,27 +12,20 @@ class Comment extends Component {
   }
 
   incrementComment = (comment) => {
-    const { dispatch } = this.props;
-    dispatch(incrementComment(comment));
+    this.props.incrementComment(comment);
   };
 
   decrementComment = (comment) => {
-    const { dispatch } = this.props;
-    dispatch(decrementComment(comment));
+    this.props.decrementComment(comment);
   };
   
   editComment = (event, comment) => {
-      const { dispatch } = this.props;
-      
-      console.log(comment);
-
       event.stopPropagation();
-      dispatch(openEditCommentModal(comment));
+      this.props.openEditCommentModal(comment);
   };
   
   removeComment = (comment) => {
-    const { dispatch } = this.props;
-    dispatch(removeComment(comment));
+    this.props.removeComment(comment);
   }
 
   render() {
@@ -69,4 +62,13 @@ function mapStateToProps({ comments }) {
   };
 };
 
-export default connect(mapStateToProps)(Comment);
+function mapDispatchToProps(dispatch) {
+  return {
+    incrementComment: (comment) => dispatch(incrementComment(comment)),
+    decrementComment: (comment) => dispatch(decrementComment(comment)),
+    openEditCommentModal: (comment) => dispatch(openEditCommentModal(comment)),
+    removeComment: (comment) => dispatch(removeComment(comment))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Comment);

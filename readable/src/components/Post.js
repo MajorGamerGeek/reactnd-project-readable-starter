@@ -18,8 +18,8 @@ class Post extends Component {
 		const { postDetails } = this.props;
 
 		if (postDetails) {
-			const { dispatch, post } = this.props;
-			dispatch(fetchPostComments(post.id));
+			const { fetchPostComments, post } = this.props;
+			fetchPostComments(post.id);
 		}
 	};
 
@@ -32,31 +32,23 @@ class Post extends Component {
 	};
 
 	editPost = (event, post) => {
-		const { dispatch } = this.props;
-
 		event.stopPropagation();
-		dispatch(openEditPostModal(post));
+		this.props.openEditPostModal(post);
 	};
 
 	removePost = (event, postId) => {
-		const { dispatch } = this.props;
-
 		event.stopPropagation();
-		dispatch(removePost(postId));
+		this.props.removePost(postId);
 	};
 
 	incrementPost = (event, post) => {
-		const { dispatch } = this.props;
-
 		event.stopPropagation();
-		dispatch(incrementPost(post));
+		this.props.incrementPost(post);
 	};
 
 	decrementPost = (event, post) => {
-		const { dispatch } = this.props;
-
 		event.stopPropagation();
-		dispatch(decrementPost(post));
+		this.props.decrementPost(post);
 	};
 
 	addComment = (event, postId) => {
@@ -131,4 +123,14 @@ function mapStateToProps({ posts, comments }) {
 	};
 };
 
-export default connect(mapStateToProps)(Post);
+function mapDispatchToProps(dispatch) {
+  return {
+		fetchPostComments: (postId) => dispatch(fetchPostComments(postId)),
+    incrementPost: (post) => dispatch(incrementPost(post)),
+    decrementPost: (post) => dispatch(decrementPost(post)),
+    openEditPostModal: (post) => dispatch(openEditPostModal(post)),
+    removePost: (postId) => dispatch(removePost(postId))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Post);

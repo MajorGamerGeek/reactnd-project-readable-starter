@@ -12,17 +12,16 @@ class Posts extends Component {
   };
 
   componentDidMount() {
-    const { dispatch } = this.props;
     const { category, post_id } = this.props.match.params;
 
     if (post_id) {
       this.setState({ postDetails: true });
-      dispatch(fetchPost(post_id));
+      this.props.fetchPost(post_id);
     } else if (category) {
       this.setState({ category });
-      dispatch(fetchCategoryPosts(category));
+      this.props.fetchCategoryPosts(category);
     } else {
-      dispatch(fetchAllPosts());
+      this.props.fetchAllPosts();
     }
   };
 
@@ -76,4 +75,12 @@ function mapStateToProps({ posts, sort }) {
   };
 };
 
-export default connect(mapStateToProps)(Posts);
+function mapDispatchToProps(dispatch) {
+  return {
+    fetchAllPosts: () => dispatch(fetchAllPosts()),
+    fetchPost: (postId) => dispatch(fetchPost(postId)),
+    fetchCategoryPosts: (category) => dispatch(fetchCategoryPosts(category))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Posts);

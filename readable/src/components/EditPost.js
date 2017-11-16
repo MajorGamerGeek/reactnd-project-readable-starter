@@ -100,8 +100,6 @@ class EditPost extends Component {
     let { author, title, category, body } = this.state.formData;
     let { categories, editPost, showModal } = this.props;
 
-    console.log(categories);
-
     return (
       <Modal show={showModal} bsSize="large" onHide={this.closeModal}>
         <Modal.Header closeButton>
@@ -130,8 +128,7 @@ class EditPost extends Component {
                 <ControlLabel>Body: </ControlLabel>
               </Col>
               <Col xs={12} md={11}>
-                <FormControl
-                  rows={10} componentClass="textarea" value={body} onChange={this.handleFormChange} placeholder="Enter Post Body" />
+                <FormControl rows={10} componentClass="textarea" value={body} onChange={this.handleFormChange} placeholder="Enter Post Body" />
               </Col>
             </FormGroup>
             <FormGroup controlId="author" validationState={this.state.validations.author}>
