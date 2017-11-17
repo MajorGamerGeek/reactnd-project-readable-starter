@@ -1,5 +1,7 @@
 import {
+	ADD_COMMENT,
 	GET_COMMENT,
+	EDIT_COMMENT,
 	GET_POST_COMMENTS,
 	DELETE_COMMENT,
 	UP_VOTE_COMMENT,
@@ -9,19 +11,38 @@ import {
 } from '../actions/Comments';
 
 const defaultCommentsState = {
-	comments: []
+	comments: [],
+	commentToedit: {},
+	showModal: false
 };
 
 function comments(state = defaultCommentsState, action) {
 	switch (action.type) {
+		case ADD_COMMENT:
+			return {
+				...state,
+				comments: [...state.comments, action.comment],
+				showModal: false
+			};
 		case GET_COMMENT:
-			action.comment.map(comment => (comment.showModal = false));
 			return {
 				...state,
 				comments: action.comment
 			};
+		case EDIT_COMMENT:
+			console.log(action.comment);
+			return {
+				...state,
+				comments: state.comments.map((comment) => {
+					if (comment.id === action.comment.id) {
+						return action.comment
+					}
+					return comment
+				}),
+				commentToEdit: {},
+				showModal: false
+			};
 		case GET_POST_COMMENTS:
-			action.comments.map(comment => (comment.showModal = false));
 			return {
 				...state,
 				comments: action.comments
@@ -54,20 +75,14 @@ function comments(state = defaultCommentsState, action) {
 		case OPEN_EDIT_COMMENT_MODAL:
 			return {
 				...state,
-				comments: state.comments.map((comment) => {
-					if (comment.id === action.comment.id) {
-						comment.showModal = true;
-					}
-					return comment;
-				}) 
+				commentToEdit: action.comment,
+				showModal: true
 			};
 		case CLOSE_EDIT_COMMENT_MODAL:
 			return {
 				...state,
-				comments: state.comments.map((comment) => {
-					comment.showModal = false;
-					return comment;
-				})
+				commentToEdit: {},
+				showModal: false
 			};
 		default:
 			return state;

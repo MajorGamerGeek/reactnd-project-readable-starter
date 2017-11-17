@@ -29,7 +29,7 @@ class Comment extends Component {
   }
 
   render() {
-    const { comment } = this.props;
+    const { comment, commentToEdit, showModal } = this.props;
 
     return (
       <Row className="comment">
@@ -50,7 +50,7 @@ class Comment extends Component {
             <Glyphicon glyph="trash" className="pointer" onClick={event => this.removeComment(comment)} />
           </div>
         </Col>
-        {comment.showModal && <EditComment showModal={comment.showModal} commentToEdit={comment} editComment={true} />}
+        {(showModal && comment.id === commentToEdit.id) && <EditComment showModal={showModal} commentToEdit={comment} editComment={true} />}
       </Row>
     )
   }
@@ -58,7 +58,9 @@ class Comment extends Component {
 
 function mapStateToProps({ comments }) {
   return {
-		comments: comments.comments
+    comments: comments.comments,
+    commentToEdit: comments.commentToEdit,
+		showModal: comments.showModal		
   };
 };
 

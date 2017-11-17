@@ -111,18 +111,18 @@ class Post extends Component {
 						</div>
 					</Col>
 				</Row>
-				{showModal && <EditPost showModal={showModal} postToEdit={postToEdit} editPost={true} />}
+				 {(showModal && post.id === postToEdit.id) && <EditPost showModal={showModal} postToEdit={post} editPost={true} />}
 			</div>
 		)
 	}
 }
 
-function mapStateToProps({ posts, comments }) {
+function mapStateToProps({ comments, posts }) {
 	return {
-		posts: posts.posts,
 		comments: comments.comments,
-		showModal: posts.showModal,
-		postToEdit: posts.postToEdit
+		posts: posts.posts,
+		postToEdit: posts.postToEdit,		
+		showModal: posts.showModal		
 	};
 };
 

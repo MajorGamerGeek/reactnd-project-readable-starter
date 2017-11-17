@@ -10,17 +10,17 @@ export const DOWN_VOTE_COMMENT = 'DOWN_VOTE_COMMENT';
 export const OPEN_EDIT_COMMENT_MODAL = 'OPEN_EDIT_COMMENT_MODAL';
 export const CLOSE_EDIT_COMMENT_MODAL = 'CLOSE_EDIT_COMMENT_MODAL';
 
-export function addComment(comments) {
+export function addComment(comment) {
 	return {
 		type: ADD_COMMENT,
-		comments
+		comment
 	}
 };
 
-export function editComment(comments) {
+export function editComment(comment) {
 	return {
 		type: EDIT_COMMENT,
-		comments
+		comment
 	}
 };
 
@@ -78,7 +78,23 @@ export function fetchPostComments(postId) {
 			.then((response) => response.json())
 			.then((postComments) => dispatch(getPostComments(postComments)));
 	}
-}
+};
+
+export function newComment(comment) {
+	return function (dispatch) {
+		API.addComment(comment)
+		.then((response) => response.json())
+		.then((comment) => dispatch(addComment(comment)));
+	}
+};
+
+export function updateComment(comment) {
+	return function (dispatch) {
+		API.editComment(comment)
+		.then((response) => response.json())
+		.then((comment) => dispatch(editComment(comment)));
+	}
+};
 
 export function removeComment(comment) {
 	return function (dispatch) {

@@ -15,7 +15,7 @@ export const addPost = (option) =>
 );
 
 export const editPost = (post) => 
-    fetch(`${api}/posts/${post.postId}`, {
+    fetch(`${api}/posts/${post.id}`, {
       headers,
       method: 'PUT',
       body: JSON.stringify({ id: post.id, title: post.title, body: post.body })
@@ -53,7 +53,15 @@ export const addComment = (comment) =>
   fetch(`${api}/comments`, {
     headers,
     method: 'POST',
-    body: JSON.stringify({ option: comment })
+    body: JSON.stringify({ id: comment.id, parentId: comment.parentId, body: comment.body, author: comment.author, timestamp: comment.timestamp })
+  }
+);
+
+export const editComment = (comment) => 
+  fetch(`${api}/comments/${comment.id}`, {
+    headers,
+    method: 'PUT',
+    body: JSON.stringify({ body: comment.body, timestamp: comment.timestamp })
   }
 );
 

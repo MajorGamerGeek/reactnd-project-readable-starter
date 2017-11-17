@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import uuid from "js-uuid";
 import { Button, Col, Form, FormControl, ControlLabel, FormGroup, Modal, Clearfix } from 'react-bootstrap';
-import { addComment, editComment, closeEditCommentModal } from '../actions/Comments';
+import { newComment, updateComment, closeEditCommentModal } from '../actions/Comments';
 
 class EditComment extends Component {
   static propTypes = {
@@ -40,7 +41,8 @@ class EditComment extends Component {
         ...state,
         formData: {
           ...state.formData,
-          ...commentToEdit
+          author: commentToEdit.author,
+          body: commentToEdit.body
         }
       }))
     }
@@ -62,79 +64,101 @@ class EditComment extends Component {
   };
 
   handleFormSubmit() {
-    let validationFlag = true;
-    let formData = this.state.formData;
+    const formData = this.state.formData;
     let validations = this.state.validations;
+    let formValid = true;
 
     for (let key in formData) {
       if (!formData[key] || formData[key].length === 0) {
         validations[key] = 'error';
-        validationFlag = false;
-      } else validations[key] = 'success';
+        formValid = false;
+      } else {
+        validations[key] = 'success';
+      }
     }
 
-    if (!validationFlag) this.setState({
-      ...this.state,
-      validations
-    })
-    else {
-      if (this.props.editFlag) this.props.editComment({ ...formData, commentId: this.props.commentToEdit.id });
-      else this.props.addComment({ ...formData, parentId: this.props.parentId });
+    if (!formValid) {
+      this.setState({ ...this.state, validations });
+    } else {
+      if (this.props.editComment) {
+        this.props.updateComment({
+          ...formData,
+          id: this.props.commentToEdit.id,
+          timestamp: Date.now()
+        });
+      } else {
+        const { category, post_id } = this.props.match.params;
+
+        if (post_id) {
+          this.props.newComment({
+            ...formData,
+            id: uuid.v4(),
+            parentId: post_id,
+            timestamp: Date.now()
+          });
+        }
+
+        window.location = `/${category}/${post_id}`;
+      };
     }
   };
 
-  closeModal = () => {
-    this.props.closeEditCommentModal();
-  };
+      closeModal = () => {
+        this.props.closeEditCommentModal();
+        if (!this.props.editComment) {
+          window.location = `/`;
+        }
+      };
 
-  render() {
-    const { editComment, showModal } = this.props;
-    const { author, body } = this.state.formData;
+      render() {
+        const { editComment, showModal } = this.props;
+        const { author, body } = this.state.formData;
 
-    return (
-      <Modal show={showModal} bsSize="large" onHide={this.closeModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Edit Comment</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form horizontal>
-            <FormGroup validationState={this.state.validations.author} controlId="author">
-              <Col xs={2}>
-                <ControlLabel>Author </ControlLabel>
-              </Col>
-              <Col xs={10}>
-                <FormControl type='text' disabled={editComment} placeholder='Comment author' value={author} onChange={this.handleFormChange} />
-              </Col>
-            </FormGroup>
-            <FormGroup validationState={this.state.validations.body} controlId="body">
-              <Col xs={1}>
-                <ControlLabel>Body</ControlLabel>
-              </Col>
-              <Col xs={11}>
-                <FormControl rows={10} componentClass="textarea" placeholder="Enter comment" value={body} onChange={this.handleFormChange} />
-              </Col>
-            </FormGroup>
-            <Clearfix />
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button bsStyle='danger' onClick={this.closeModal}>Cancel</Button>
-          <Button bsStyle='success' onClick={this.handleFormSubmit}>Submit</Button>
-        </Modal.Footer>
-      </Modal>
-    )
-  }
-};
+        return (
+          <Modal show={showModal} bsSize="large" onHide={this.closeModal}>
+            <Modal.Header closeButton>
+              <Modal.Title>Edit Comment</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form horizontal>
+                <FormGroup validationState={this.state.validations.author} controlId="author">
+                  <Col xs={2}>
+                    <ControlLabel>Author </ControlLabel>
+                  </Col>
+                  <Col xs={10}>
+                    <FormControl type='text' disabled={editComment} placeholder='Comment author' value={author} onChange={this.handleFormChange} />
+                  </Col>
+                </FormGroup>
+                <FormGroup validationState={this.state.validations.body} controlId="body">
+                  <Col xs={1}>
+                    <ControlLabel>Body</ControlLabel>
+                  </Col>
+                  <Col xs={11}>
+                    <FormControl rows={10} componentClass="textarea" placeholder="Enter comment" value={body} onChange={this.handleFormChange} />
+                  </Col>
+                </FormGroup>
+                <Clearfix />
+              </Form>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button bsStyle='danger' onClick={this.closeModal}>Cancel</Button>
+              <Button bsStyle='success' onClick={this.handleFormSubmit}>Submit</Button>
+            </Modal.Footer>
+          </Modal>
+        )
+      }
+    };
 
-function mapStateToProps() {
-  return {
-  };
-};
+    function mapStateToProps() {
+      return {};
+    };
 
-function mapDispatchToProps(dispatch) {
-  return {
-    closeEditCommentModal: () => dispatch(closeEditCommentModal())
-  };
-};
+    function mapDispatchToProps(dispatch) {
+      return {
+        newComment: (comment) => dispatch(newComment(comment)),
+        updateComment: (comment) => dispatch(updateComment(comment)),
+        closeEditCommentModal: () => dispatch(closeEditCommentModal())
+      };
+    };
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditComment);
+    export default connect(mapStateToProps, mapDispatchToProps)(EditComment);
