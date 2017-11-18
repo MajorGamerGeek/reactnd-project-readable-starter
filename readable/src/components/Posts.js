@@ -41,7 +41,7 @@ class Posts extends Component {
   });
 
   render() {
-    const { dispatch, posts, sort } = this.props;
+    const { posts, sort, sortBy } = this.props;
     const { postDetails, category } = this.state;
 
     console.log(posts);
@@ -51,7 +51,7 @@ class Posts extends Component {
       <Grid>
         <Row>
           {postDetails === false &&
-            <select onChange={event => dispatch(sortBy(event.target.value))}>
+            <select onChange={event => sortBy(event.target.value)}>
               <option value='VoteScoreAsc'>VoteScoreAsc</option>
               <option value='VoteScoreDesc'>VoteScoreDesc</option>
               <option value='TimestampAsc'>TimestampAsc</option>
@@ -79,7 +79,8 @@ function mapDispatchToProps(dispatch) {
   return {
     fetchAllPosts: () => dispatch(fetchAllPosts()),
     fetchPost: (postId) => dispatch(fetchPost(postId)),
-    fetchCategoryPosts: (category) => dispatch(fetchCategoryPosts(category))
+    fetchCategoryPosts: (category) => dispatch(fetchCategoryPosts(category)),
+    sortBy: (sortByValue) => dispatch(sortBy(sortByValue))
   };
 };
 
