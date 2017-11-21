@@ -8,8 +8,6 @@ export const GET_CATEGORY_POSTS = 'GET_CATEGORY_POSTS';
 export const GET_ALL_POSTS = 'GET_ALL_POSTS';
 export const UP_VOTE_POST = ' UP_VOTE_POST';
 export const DOWN_VOTE_POST = 'DOWN_VOTE_POST';
-export const OPEN_EDIT_POST_MODAL = 'OPEN_EDIT_POST_MODAL';
-export const CLOSE_EDIT_POST_MODAL = 'CLOSE_EDIT_POST_MODAL';
 
 export function addPost(posts) {
 	return {
@@ -64,19 +62,6 @@ export function downVotePost(posts) {
 	return {
 		type: DOWN_VOTE_POST,
 		posts
-	}
-};
-
-export function openEditPostModal(post) {
-	return {
-		type: OPEN_EDIT_POST_MODAL,
-		post
-	}
-};
-
-export function closeEditPostModal() {
-	return {
-		type: CLOSE_EDIT_POST_MODAL
 	}
 };
 

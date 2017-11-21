@@ -97,17 +97,12 @@ class EditComment extends Component {
             timestamp: Date.now()
           });
         }
-
-        window.location = `/${category}/${post_id}`;
       };
     }
   };
 
       closeModal = () => {
         this.props.closeEditCommentModal();
-        if (!this.props.editComment) {
-          window.location = `/`;
-        }
       };
 
       render() {

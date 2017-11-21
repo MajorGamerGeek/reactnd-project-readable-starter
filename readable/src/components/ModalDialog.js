@@ -1,17 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { addPosts, editPost, closeEditPostModal } from '../actions/Posts';
-import { Button, Clearfix,  Col, ControlLabel, Form, FormControl, FormGroup, Modal } from 'react-bootstrap';
+import { closeModal } from '../actions/Modal';
+import { addPosts, editPost } from '../actions/Posts';
+import { Button, Clearfix, Col, ControlLabel, Form, FormControl, FormGroup, Modal } from 'react-bootstrap';
 import { editComment } from '../actions/Comments';
 
-class EditPost extends Component {
-  static propTypes = {
-    postToEdit: PropTypes.object,
-    editPost: PropTypes.bool.isRequired,
-    showModal: PropTypes.bool.isRequired
-  }
-
+class ModalDialog extends Component {
   constructor(props) {
     super(props);
 
@@ -19,12 +13,14 @@ class EditPost extends Component {
       formData: {
         author: 'anonymous',
         body: '',
+        category: '',
         title: ''
       },
       validations: {
         author: null,
-        title: null,
-        body: null
+        body: null,
+        category: null,
+        title: null
       }
     }
 
@@ -32,18 +28,20 @@ class EditPost extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  componentDidMount() {
-    const { editPost, postToEdit } = this.props;
+  componentWillReceiveProps(nextProps) {
+    const { modal } = nextProps;
 
-    if (editPost) {
-      this.setState((state) => ({
-        ...state,
-        formData: {
-          ...state.formData,
-          ...postToEdit
-        }
-      }));
+    if (!modal.postToEdit || !modal.postToEdit.id) {
+      return;
     }
+
+    this.setState((state) => ({
+      ...state,
+      formData: {
+        ...state.formData,
+        ...modal.postToEdit
+      }
+    }));
   };
 
   handleFormChange(event) {
@@ -62,12 +60,13 @@ class EditPost extends Component {
   }
 
   handleSubmit() {
-    const { editPost, postToEdit } = this.props;
+    const { postToEdit } = this.props;
     const formData = this.state.formData;
     let validations = this.state.validations;
     let formValid = true;
 
     for (let key in formData) {
+      console.log(key);
       console.log(formData[key]);
 
       if (!formData[key] || formData[key].length === 0) {
@@ -79,10 +78,10 @@ class EditPost extends Component {
     }
 
     if (formValid) {
-      if (editPost) {
-        this.props.editPost({ ...formData, postToEdit }); 
-      } else { 
-        this.props.addPost(formData); 
+      if (true) {
+        this.props.editPost({ ...formData, postToEdit });
+      } else {
+        this.props.addPost(formData);
       }
     } else {
       this.setState({
@@ -92,16 +91,25 @@ class EditPost extends Component {
     }
   }
 
+  resetState = () => {
+    this.setState({
+      formData: {
+        author: 'anonymous',
+        body: '',
+        category: '',
+        title: ''
+      }
+    });
+  };
+
   closeModal = () => {
-    this.props.closeEditPostModal();
-    if (!this.props.editPost) {
-      window.location = `/`;
-    }
-	};
+    this.resetState();
+    this.props.closeModal();
+  };
 
   render() {
     let { author, title, category, body } = this.state.formData;
-    let { categories, editPost, showModal } = this.props;
+    let { categories, showModal } = this.props;
 
     return (
       <Modal show={showModal} bsSize="large" onHide={this.closeModal}>
@@ -123,7 +131,7 @@ class EditPost extends Component {
                 <ControlLabel>Category: </ControlLabel>
               </Col>
               <Col xs={12} md={11}>
-                <FormControl type="text" disabled={editPost} value={category} placeholder="Category" onChange={this.handleFormChange} />
+                <FormControl type="text" disabled={true} value={category} placeholder="Category" onChange={this.handleFormChange} />
               </Col>
             </FormGroup>
             <FormGroup controlId="body" validationState={this.state.validations.body}>
@@ -154,16 +162,19 @@ class EditPost extends Component {
   }
 }
 
-function mapStateToProps(categories) {
+function mapStateToProps({ categories, modal }, ownProps) {
   return {
-    categories: categories.categories
+    ...ownProps,
+    categories: categories.categories,
+    showModal: modal.showModal,
+    modal
   };
 };
 
 function mapDispatchToProps(dispatch) {
   return {
-    closeEditPostModal: () => dispatch(closeEditPostModal())
+    closeModal: () => dispatch(closeModal())
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditPost);
+export default connect(mapStateToProps, mapDispatchToProps)(ModalDialog);

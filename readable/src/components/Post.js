@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Row, Col, Glyphicon } from 'react-bootstrap';
-import { removePost, incrementPost, decrementPost, openEditPostModal } from '../actions/Posts';
+import { removePost, incrementPost, decrementPost } from '../actions/Posts';
+import { openModal } from '../actions/Modal';
 import { fetchPostComments } from '../actions/Comments';
 import Comment from './Comment';
-import EditPost from './EditPost';
 import { formatDate } from '../utils/FormatDate';
 
 class Post extends Component {
@@ -33,7 +33,7 @@ class Post extends Component {
 
 	editPost = (event, post) => {
 		event.stopPropagation();
-		this.props.openEditPostModal(post);
+		this.props.openModal(post);
 	};
 
 	removePost = (event, postId) => {
@@ -73,9 +73,8 @@ class Post extends Component {
 	}
 
 	render() {
-		const { post, postDetails, postToEdit, showModal } = this.props;
+		const { post, postDetails } = this.props;
 		console.log(post);
-		console.log(showModal);
 		return (
 			<div>
 				<Row className="post" onClick={() => this.showPostDetails(post.category, post.id)}>
@@ -111,7 +110,6 @@ class Post extends Component {
 						</div>
 					</Col>
 				</Row>
-				 {(showModal && post.id === postToEdit.id) && <EditPost showModal={showModal} postToEdit={post} editPost={true} />}
 			</div>
 		)
 	}
@@ -120,9 +118,7 @@ class Post extends Component {
 function mapStateToProps({ comments, posts }) {
 	return {
 		comments: comments.comments,
-		posts: posts.posts,
-		postToEdit: posts.postToEdit,		
-		showModal: posts.showModal		
+		posts: posts.posts
 	};
 };
 
@@ -131,7 +127,7 @@ function mapDispatchToProps(dispatch) {
 		fetchPostComments: (postId) => dispatch(fetchPostComments(postId)),
     incrementPost: (post) => dispatch(incrementPost(post)),
     decrementPost: (post) => dispatch(decrementPost(post)),
-    openEditPostModal: (post) => dispatch(openEditPostModal(post)),
+    openModal: (post) => dispatch(openModal(post)),
     removePost: (postId) => dispatch(removePost(postId))
   };
 };

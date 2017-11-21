@@ -5,18 +5,10 @@ import {
 	GET_CATEGORY_POSTS,
 	GET_ALL_POSTS,
 	UP_VOTE_POST,
-	DOWN_VOTE_POST,
-	OPEN_EDIT_POST_MODAL,
-	CLOSE_EDIT_POST_MODAL
+	DOWN_VOTE_POST
 } from '../actions/Posts';
 
-const defaultPostsState = {
-	posts: [],
-	postToEdit: {},
-	showModal: false
-};
-
-function posts(state = defaultPostsState, action) {
+function posts(state = { posts: [] }, action) {
 	switch (action.type) {
 		case ADD_POST:
 			console.log(action);
@@ -63,18 +55,6 @@ function posts(state = defaultPostsState, action) {
 					}
 					return post;
 				})
-			};
-		case OPEN_EDIT_POST_MODAL:
-			return {
-				...state,
-				postToEdit: action.post,
-				showModal: true
-			};
-		case CLOSE_EDIT_POST_MODAL:
-			return {
-				...state,
-				postToEdit: {},
-				showModal: false
 			};
 		default:
 			return state;
