@@ -9,17 +9,17 @@ export const GET_ALL_POSTS = 'GET_ALL_POSTS';
 export const UP_VOTE_POST = ' UP_VOTE_POST';
 export const DOWN_VOTE_POST = 'DOWN_VOTE_POST';
 
-export function addPost(posts) {
+export function addPost(post) {
 	return {
 		type: ADD_POST,
-		posts
+		post
 	}
 };
 
-export function editPost(posts) {
+export function editPost(post) {
 	return {
 		type: EDIT_POST,
-		posts
+		post
 	}
 };
 
@@ -70,6 +70,23 @@ export function fetchPost(postId) {
 		API.getPost(postId)
 			.then((response) => response.json())
 			.then((post) => dispatch(getPost(post)));
+	}
+};
+
+export function newPost(post) {
+	return function (dispatch) {
+		API.addPost(post)
+		.then((response) => response.json())
+		.then((post) => dispatch(addPost(post)));
+	}
+};
+
+export function updatePost(post) {
+	console.log(post);
+	return function (dispatch) {
+		API.editPost(post)
+		.then((response) => response.json())
+		.then((post) => dispatch(editPost(post)));
 	}
 };
 

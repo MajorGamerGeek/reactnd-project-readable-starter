@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Row, Col, Glyphicon } from 'react-bootstrap';
-import { removePost, incrementPost, decrementPost } from '../actions/Posts';
+import { fetchPost, fetchAllPosts, removePost, incrementPost, decrementPost } from '../actions/Posts';
 import { openModal } from '../actions/Modal';
 import { fetchPostComments } from '../actions/Comments';
 import Comment from './Comment';
@@ -15,7 +15,12 @@ class Post extends Component {
 	}
 
 	componentDidMount() {
-		const { postDetails } = this.props;
+		const { post, postDetails } = this.props;
+
+		if (!post) {
+			const { post_id } = this.props.match.params;
+      this.props.fetchPost(post_id);
+    }
 
 		if (postDetails) {
 			const { fetchPostComments, post } = this.props;
@@ -68,12 +73,13 @@ class Post extends Component {
 	};
 
 	static propTypes = {
-		post: PropTypes.object.isRequired,
+		post: PropTypes.object,
 		postDetails: PropTypes.bool.isRequired
 	}
 
 	render() {
 		const { post, postDetails } = this.props;
+		console.log(postDetails);
 		console.log(post);
 		return (
 			<div>
@@ -100,14 +106,16 @@ class Post extends Component {
 					}
 					<Col xs={12} sm={2} md={1} className="post-editDelete vertical-align">
 						<div>
-							<Glyphicon glyph="plus" className="pointer" onClick={event => this.addComment(event, post.id)} />
-						</div>
-						<div>
 							<Glyphicon glyph="pencil" className="pointer" onClick={event => this.editPost(event, post)} />
 						</div>
 						<div>
 							<Glyphicon glyph="trash" className="pointer" onClick={event => this.removePost(event, post.id)} />
 						</div>
+						{postDetails && (
+							<div>
+								<Glyphicon glyph="plus" className="pointer" onClick={event => this.addComment(event, post.id)} />
+							</div>
+						)}
 					</Col>
 				</Row>
 			</div>
@@ -124,11 +132,13 @@ function mapStateToProps({ comments, posts }) {
 
 function mapDispatchToProps(dispatch) {
   return {
+		fetchAllPosts: () => dispatch(fetchAllPosts()),
+    fetchPost: (postId) => dispatch(fetchPost(postId)),
 		fetchPostComments: (postId) => dispatch(fetchPostComments(postId)),
     incrementPost: (post) => dispatch(incrementPost(post)),
     decrementPost: (post) => dispatch(decrementPost(post)),
     openModal: (post) => dispatch(openModal(post)),
-    removePost: (postId) => dispatch(removePost(postId))
+		removePost: (postId) => dispatch(removePost(postId))
   };
 };
 

@@ -6,11 +6,11 @@ const headers = {
   'Authorization': 'readable-mmg'
 }
 
-export const addPost = (option) =>
+export const addPost = (post) =>
   fetch(`${api}/posts`, {
     headers,
     method: 'POST',
-    body: JSON.stringify({ option: option })
+    body: JSON.stringify(post)
   }
 );
 
@@ -18,7 +18,7 @@ export const editPost = (post) =>
     fetch(`${api}/posts/${post.id}`, {
       headers,
       method: 'PUT',
-      body: JSON.stringify({ id: post.id, title: post.title, body: post.body })
+      body: JSON.stringify({ title: post.title, body: post.body })
     }
 );
 

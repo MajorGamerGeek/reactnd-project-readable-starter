@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from "react-router-dom";
+import uuid from "js-uuid";
 import { closeModal } from '../actions/Modal';
-import { addPosts, editPost } from '../actions/Posts';
+import { newPost, updatePost } from '../actions/Posts';
 import { Button, Clearfix, Col, ControlLabel, Form, FormControl, FormGroup, Modal } from 'react-bootstrap';
 import { editComment } from '../actions/Comments';
 
@@ -35,11 +37,15 @@ class ModalDialog extends Component {
       return;
     }
 
+    const post = modal.postToEdit;
+
     this.setState((state) => ({
       ...state,
       formData: {
-        ...state.formData,
-        ...modal.postToEdit
+        author: post.author,
+        body: post.body,
+        category: post.category,
+        title: post.title
       }
     }));
   };
@@ -59,17 +65,16 @@ class ModalDialog extends Component {
     })
   }
 
-  handleSubmit() {
-    const { postToEdit } = this.props;
+  handleSubmit(event) {
+    const { postToEdit } = this.props.modal;
     const formData = this.state.formData;
     let validations = this.state.validations;
     let formValid = true;
 
     for (let key in formData) {
-      console.log(key);
-      console.log(formData[key]);
-
       if (!formData[key] || formData[key].length === 0) {
+        console.log(formData[key]);
+        console.log(key);
         validations[key] = 'error';
         formValid = false;
       } else {
@@ -77,13 +82,26 @@ class ModalDialog extends Component {
       }
     }
 
-    if (formValid) {
-      if (true) {
-        this.props.editPost({ ...formData, postToEdit });
+    if (formValid) {      
+      const POST = {
+        ...formData,
+        timestamp: Date.now(),
+        id: uuid.v4()
+      };
+      
+      if (postToEdit.id) {
+        POST.id = postToEdit.id;
+        this.props.updatePost(POST);
       } else {
-        this.props.addPost(formData);
+        console.log(formData);
+        this.props.newPost(POST);
       }
+
+      this.closeModal();
+      this.props.history.push(`/${POST.category}/${POST.id}`);
+      event.preventDefault();
     } else {
+      console.log('Form NOT valid');
       this.setState({
         ...this.state,
         validations
@@ -98,6 +116,12 @@ class ModalDialog extends Component {
         body: '',
         category: '',
         title: ''
+      },
+      validations: {
+        author: null,
+        body: null,
+        category: null,
+        title: null
       }
     });
   };
@@ -109,29 +133,44 @@ class ModalDialog extends Component {
 
   render() {
     let { author, title, category, body } = this.state.formData;
-    let { categories, showModal } = this.props;
+    let { categories, modal } = this.props;
 
     return (
-      <Modal show={showModal} bsSize="large" onHide={this.closeModal}>
+      <Modal show={modal.showModal} bsSize="large" onHide={this.closeModal}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit Post</Modal.Title>
+          <Modal.Title>{modal.postToEdit.id ? "Edit" : "Add"}  Post</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
+            {!modal.postToEdit.id && (
+              <div>
+                <FormGroup controlId="author" validationState={this.state.validations.author}>
+                  <Col xs={1}>
+                    <ControlLabel>Name: </ControlLabel>
+                  </Col>
+                  <Col xs={12} md={5}>
+                    <FormControl type="text" value={author} placeholder="Your Name" onChange={this.handleFormChange} />
+                  </Col>
+                </FormGroup>
+                <FormGroup controlId="category" validationState={this.state.validations.category}>
+                  <Col xs={1}>
+                    <ControlLabel>Category: </ControlLabel>
+                  </Col>
+                  <Col xs={12} md={5}>
+                    <FormControl id='category' componentClass='select' onChange={this.handleFormChange} value={category}>
+                      <option value="">Select a Category</option>
+                      {categories && categories.map((category) => (<option key={category.path} value={category.path}>{category.name}</option>))}
+                    </FormControl>
+                  </Col>
+                </FormGroup>
+              </div>
+            )}
             <FormGroup controlId="title" validationState={this.state.validations.title}>
               <Col xs={1}>
                 <ControlLabel>Title: </ControlLabel>
               </Col>
               <Col xs={12} md={11}>
-                <FormControl type="text" value={title} placeholder="Post title" onChange={this.handleFormChange} />
-              </Col>
-            </FormGroup>
-            <FormGroup controlId="category">
-              <Col xs={1}>
-                <ControlLabel>Category: </ControlLabel>
-              </Col>
-              <Col xs={12} md={11}>
-                <FormControl type="text" disabled={true} value={category} placeholder="Category" onChange={this.handleFormChange} />
+                <FormControl type="text" value={title} placeholder="Title" onChange={this.handleFormChange} />
               </Col>
             </FormGroup>
             <FormGroup controlId="body" validationState={this.state.validations.body}>
@@ -140,14 +179,6 @@ class ModalDialog extends Component {
               </Col>
               <Col xs={12} md={11}>
                 <FormControl rows={10} componentClass="textarea" value={body} onChange={this.handleFormChange} placeholder="Enter Post Body" />
-              </Col>
-            </FormGroup>
-            <FormGroup controlId="author" validationState={this.state.validations.author}>
-              <Col xs={1}>
-                <ControlLabel>Author: </ControlLabel>
-              </Col>
-              <Col xs={12} md={11}>
-                <FormControl type="text" value={author} placeholder="Author" onChange={this.handleFormChange} />
               </Col>
             </FormGroup>
             <Clearfix />
@@ -165,16 +196,17 @@ class ModalDialog extends Component {
 function mapStateToProps({ categories, modal }, ownProps) {
   return {
     ...ownProps,
-    categories: categories.categories,
-    showModal: modal.showModal,
+    categories,
     modal
   };
 };
 
 function mapDispatchToProps(dispatch) {
   return {
-    closeModal: () => dispatch(closeModal())
+    closeModal: () => dispatch(closeModal()),
+    newPost: (post) => dispatch(newPost(post)),
+    updatePost: (post) => dispatch(updatePost(post))
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ModalDialog);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ModalDialog));

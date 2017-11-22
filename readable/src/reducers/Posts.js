@@ -1,5 +1,6 @@
 import {
 	ADD_POST,
+	EDIT_POST,
 	DELETE_POST,
 	GET_POST,
 	GET_CATEGORY_POSTS,
@@ -11,7 +12,11 @@ import {
 function posts(state = { posts: [] }, action) {
 	switch (action.type) {
 		case ADD_POST:
-			console.log(action);
+			return {
+				...state,
+				posts: [action.post]
+			};
+		case EDIT_POST:
 			return {
 				...state,
 				posts: [action.post]
