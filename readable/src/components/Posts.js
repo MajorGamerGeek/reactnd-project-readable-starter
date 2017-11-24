@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Col, FormControl, Grid, Row } from 'react-bootstrap';
+import { Button, Col, FormControl, Row } from 'react-bootstrap';
 import { fetchCategoryPosts, fetchAllPosts } from '../actions/Posts';
 import { openModal } from '../actions/Modal';
 import { sortBy } from '../actions/Sort';
 import Post from './Post';
 
-class Posts extends Component {  
+class Posts extends Component {
   componentDidMount() {
     const { category } = this.props.match.params;
 
@@ -36,7 +36,7 @@ class Posts extends Component {
     const { posts, sort, sortBy } = this.props;
 
     return (
-      <Grid>
+      <div>
         <Row>
           <Col xs={4}>
             <FormControl id='category' componentClass='select' onChange={event => sortBy(event.target.value)}>
@@ -50,8 +50,8 @@ class Posts extends Component {
             <Button bsStyle="primary" onClick={() => this.props.openModal({})}>Create Post</Button>
           </Col>
         </Row>
-        {this.sortPosts(posts, sort).map((post) => <Post key={post.id} post={post} postDetails={false} />)}
-      </Grid>
+        {this.sortPosts(posts, sort).map((post) => <Post key={post.id} postItem={post} postDetails={false} />)}
+      </div>
     );
   }
 };

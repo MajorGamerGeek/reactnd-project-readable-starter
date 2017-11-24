@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Row, Col, Glyphicon } from 'react-bootstrap';
 import { incrementComment, decrementComment, removeComment, openEditCommentModal } from '../actions/Comments';
 import { formatDate } from '../utils/FormatDate';
-import EditComment from './EditComment';
+import CommentModal from './CommentModal';
 
 class Comment extends Component {
   static propTypes = {
@@ -50,7 +50,7 @@ class Comment extends Component {
             <Glyphicon glyph="trash" className="pointer" onClick={event => this.removeComment(comment)} />
           </div>
         </Col>
-        {(showModal && comment.id === commentToEdit.id) && <EditComment showModal={showModal} commentToEdit={comment} editComment={true} />}
+        {(showModal && comment.id === commentToEdit.id) && <CommentModal showModal={showModal} commentToEdit={comment} editComment={true} />}
       </Row>
     )
   }

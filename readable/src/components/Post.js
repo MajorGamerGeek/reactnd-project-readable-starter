@@ -5,6 +5,7 @@ import { Row, Col, Glyphicon } from 'react-bootstrap';
 import { fetchPost, fetchAllPosts, removePost, incrementPost, decrementPost } from '../actions/Posts';
 import { openModal } from '../actions/Modal';
 import { fetchPostComments } from '../actions/Comments';
+import AddComment from './AddComment';
 import Comment from './Comment';
 import { formatDate } from '../utils/FormatDate';
 
@@ -15,16 +16,13 @@ class Post extends Component {
 	}
 
 	componentDidMount() {
-		const { post, postDetails } = this.props;
+		const { fetchPost, fetchPostComments, match, postItem } = this.props;
 
-		if (!post) {
-			const { post_id } = this.props.match.params;
-      this.props.fetchPost(post_id);
-    }
+		if (!postItem) {
+			const routePostId = match && match.params && match.params.post_id;
 
-		if (postDetails) {
-			const { fetchPostComments, post } = this.props;
-			fetchPostComments(post.id);
+			fetchPost(routePostId);
+			fetchPostComments(routePostId);
 		}
 	};
 
@@ -56,9 +54,8 @@ class Post extends Component {
 		this.props.decrementPost(post);
 	};
 
-	addComment = (event, postId) => {
-		event.stopPropagation();
-		window.location = `/addcomment/${postId}`;
+	addComment = (event, post) => {
+		this.props.openAddCommentModal();
 	};
 
 	getPostComments = (postId) => {
@@ -78,46 +75,62 @@ class Post extends Component {
 	}
 
 	render() {
-		const { post, postDetails } = this.props;
-		console.log(postDetails);
-		console.log(post);
+		const { postItem, posts, postDetails } = this.props;
+		let post = null;
+
+		if (postItem) {
+			post = postItem;
+		} else {
+			post = posts[0];
+		}
+
 		return (
 			<div>
-				<Row className="post" onClick={() => this.showPostDetails(post.category, post.id)}>
-					<Col xs={12} sm={2} md={1} className="post-voteScore">
-						<Glyphicon glyph="triangle-top" className="pointer" onClick={event => this.incrementPost(event, post)} />
-						<div>{post.voteScore}</div>
-						<Glyphicon glyph="triangle-bottom" className="pointer" onClick={event => this.decrementPost(event, post)} />
-					</Col>
-					<Col xs={12} sm={8} md={10} className="vertical-align">
-						<div className="post-title">{post.title}</div>
-						<div className="post-timeStampAuthor">{formatDate(post.timestamp)} - {post.author}</div>
-						<div className="post-commentsCount">{post.commentCount} Comments</div>
-					</Col>
-					{postDetails &&
-						<Col xs={12} sm={8} md={10} className="post-body">
-							<div>
-								{post.body}
-							</div>
-							<ol className="posts-list">
-								{this.getPostComments(post.id).map(comment => (<Comment key={comment.id} comment={comment} />))}
-							</ol>
-						</Col>
-					}
-					<Col xs={12} sm={2} md={1} className="post-editDelete vertical-align">
-						<div>
-							<Glyphicon glyph="pencil" className="pointer" onClick={event => this.editPost(event, post)} />
-						</div>
-						<div>
-							<Glyphicon glyph="trash" className="pointer" onClick={event => this.removePost(event, post.id)} />
-						</div>
+				{post && (
+					<div>
+						<Row className="post" onClick={() => this.showPostDetails(post.category, post.id)}>
+							<Col xs={12} sm={2} md={1} className="post-voteScore">
+								<Glyphicon glyph="triangle-top" className="pointer" onClick={event => this.incrementPost(event, post)} />
+								<div>{post.voteScore}</div>
+								<Glyphicon glyph="triangle-bottom" className="pointer" onClick={event => this.decrementPost(event, post)} />
+							</Col>
+							<Col xs={12} sm={8} md={10} className="vertical-align">
+								<div className="post-title">{post.title}</div>
+								<div className="post-timeStampAuthor">{formatDate(post.timestamp)} - {post.author}</div>
+								<div className="post-category">{post.category}</div>
+								<div className="post-commentsCount">{post.commentCount} Comments</div>
+							</Col>
+							{postDetails &&
+								<Col xs={12} sm={8} md={10} className="post-body">
+									<div>
+										{post.body}
+									</div>
+									<ol className="posts-list">
+										{this.getPostComments(post.id).map(comment => (<Comment key={comment.id} comment={comment} />))}
+									</ol>
+								</Col>
+							}
+							<Col xs={12} sm={2} md={1} className="post-editDelete vertical-align">
+								<div>
+									<Glyphicon glyph="pencil" className="pointer" onClick={event => this.editPost(event, post)} />
+								</div>
+								<div>
+									<Glyphicon glyph="trash" className="pointer" onClick={event => this.removePost(event, post.id)} />
+								</div>
+								{postDetails && (
+									<div>
+										<Glyphicon glyph="plus" className="pointer" onClick={() => this.props.openModal({ parentId: post.id })} />
+									</div>
+								)}
+							</Col>
+						</Row>
 						{postDetails && (
-							<div>
-								<Glyphicon glyph="plus" className="pointer" onClick={event => this.addComment(event, post.id)} />
-							</div>
+							<Row className="addcomment">
+								<AddComment parentId={post.id} />
+							</Row>
 						)}
-					</Col>
-				</Row>
+					</div>
+				)}
 			</div>
 		)
 	}
@@ -131,15 +144,15 @@ function mapStateToProps({ comments, posts }) {
 };
 
 function mapDispatchToProps(dispatch) {
-  return {
+	return {
 		fetchAllPosts: () => dispatch(fetchAllPosts()),
-    fetchPost: (postId) => dispatch(fetchPost(postId)),
+		fetchPost: (postId) => dispatch(fetchPost(postId)),
 		fetchPostComments: (postId) => dispatch(fetchPostComments(postId)),
-    incrementPost: (post) => dispatch(incrementPost(post)),
-    decrementPost: (post) => dispatch(decrementPost(post)),
-    openModal: (post) => dispatch(openModal(post)),
+		incrementPost: (post) => dispatch(incrementPost(post)),
+		decrementPost: (post) => dispatch(decrementPost(post)),
+		openModal: (post) => dispatch(openModal(post)),
 		removePost: (postId) => dispatch(removePost(postId))
-  };
+	};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Post);

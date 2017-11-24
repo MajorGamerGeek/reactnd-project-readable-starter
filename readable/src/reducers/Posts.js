@@ -12,9 +12,11 @@ import {
 function posts(state = { posts: [] }, action) {
 	switch (action.type) {
 		case ADD_POST:
+			const { post } = action;
+			const posts = [...state, post];
 			return {
 				...state,
-				posts: [action.post]
+				posts: posts.filter(post => post.deleted === false)
 			};
 		case EDIT_POST:
 			return {

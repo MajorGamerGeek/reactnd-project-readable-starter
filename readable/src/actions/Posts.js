@@ -82,7 +82,6 @@ export function newPost(post) {
 };
 
 export function updatePost(post) {
-	console.log(post);
 	return function (dispatch) {
 		API.editPost(post)
 		.then((response) => response.json())
@@ -107,7 +106,6 @@ export function fetchAllPosts() {
 };
 
 export function fetchCategoryPosts(category) {
-	console.log(category);
 	return function (dispatch) {
 		API.getCategoryPosts(category)
 		.then((response) => response.json())

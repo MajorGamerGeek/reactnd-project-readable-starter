@@ -30,7 +30,6 @@ function comments(state = defaultCommentsState, action) {
 				comments: action.comment
 			};
 		case EDIT_COMMENT:
-			console.log(action.comment);
 			return {
 				...state,
 				comments: state.comments.map((comment) => {

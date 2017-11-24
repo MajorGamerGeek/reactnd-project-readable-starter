@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom";
 import uuid from "js-uuid";
 import { closeModal } from '../actions/Modal';
+import { newComment } from '../actions/Comments';
 import { newPost, updatePost } from '../actions/Posts';
 import { Button, Clearfix, Col, ControlLabel, Form, FormControl, FormGroup, Modal } from 'react-bootstrap';
-import { editComment } from '../actions/Comments';
 
-class ModalDialog extends Component {
+class PostModal extends Component {
   constructor(props) {
     super(props);
 
@@ -73,8 +73,6 @@ class ModalDialog extends Component {
 
     for (let key in formData) {
       if (!formData[key] || formData[key].length === 0) {
-        console.log(formData[key]);
-        console.log(key);
         validations[key] = 'error';
         formValid = false;
       } else {
@@ -93,7 +91,6 @@ class ModalDialog extends Component {
         POST.id = postToEdit.id;
         this.props.updatePost(POST);
       } else {
-        console.log(formData);
         this.props.newPost(POST);
       }
 
@@ -101,7 +98,6 @@ class ModalDialog extends Component {
       this.props.history.push(`/${POST.category}/${POST.id}`);
       event.preventDefault();
     } else {
-      console.log('Form NOT valid');
       this.setState({
         ...this.state,
         validations
@@ -193,9 +189,8 @@ class ModalDialog extends Component {
   }
 }
 
-function mapStateToProps({ categories, modal }, ownProps) {
+function mapStateToProps({ categories, modal }) {
   return {
-    ...ownProps,
     categories,
     modal
   };
@@ -204,9 +199,10 @@ function mapStateToProps({ categories, modal }, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     closeModal: () => dispatch(closeModal()),
+    newComment: (comment) => dispatch(newComment(comment)),
     newPost: (post) => dispatch(newPost(post)),
     updatePost: (post) => dispatch(updatePost(post))
   };
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ModalDialog));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PostModal));
