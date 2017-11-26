@@ -128,8 +128,8 @@ class PostModal extends Component {
   };
 
   render() {
-    let { author, title, category, body } = this.state.formData;
-    let { categories, modal } = this.props;
+    const { author, title, category, body } = this.state.formData;
+    const { categories, modal } = this.props;
 
     return (
       <Modal show={modal.showModal} bsSize="large" onHide={this.closeModal}>

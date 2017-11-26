@@ -19,6 +19,7 @@ const defaultCommentsState = {
 function comments(state = defaultCommentsState, action) {
 	switch (action.type) {
 		case ADD_COMMENT:
+			console.log(state);
 			return {
 				...state,
 				comments: [...state.comments, action.comment],

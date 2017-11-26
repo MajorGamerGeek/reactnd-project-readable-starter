@@ -6,22 +6,24 @@ import {
 	GET_CATEGORY_POSTS,
 	GET_ALL_POSTS,
 	UP_VOTE_POST,
-	DOWN_VOTE_POST
+	DOWN_VOTE_POST,
+	INCREMENT_COMMENT_COUNT,
+	DECREMENT_COMMENT_COUNT
 } from '../actions/Posts';
 
 function posts(state = { posts: [] }, action) {
+	const { post } = action;
+
 	switch (action.type) {
 		case ADD_POST:
-			const { post } = action;
-			const posts = [...state, post];
 			return {
 				...state,
-				posts: posts.filter(post => post.deleted === false)
+				posts: [...state, post].filter(post => post.deleted === false)
 			};
 		case EDIT_POST:
 			return {
 				...state,
-				posts: [action.post]
+				posts: [post]
 			};
 		case DELETE_POST:
 			return {
@@ -31,7 +33,7 @@ function posts(state = { posts: [] }, action) {
 		case GET_POST:
 			return {
 				...state,
-				posts: [action.post]
+				posts: [post]
 			};
 		case GET_ALL_POSTS:
 			return {
@@ -63,6 +65,28 @@ function posts(state = { posts: [] }, action) {
 					return post;
 				})
 			};
+		case INCREMENT_COMMENT_COUNT:
+			return {
+				...state,
+				posts: state.posts.map((post) => {
+					if (post.id === action.postId) {
+						post.commentCount++;
+						return post;
+					}
+					return post;
+				})
+			}
+		case DECREMENT_COMMENT_COUNT:
+			return {
+				...state,
+				posts: state.posts.map((post) => {
+					if (post.id === action.postId) {
+						post.commentCount--;
+						return post;
+					}
+					return post;
+				})
+			}
 		default:
 			return state;
 	}

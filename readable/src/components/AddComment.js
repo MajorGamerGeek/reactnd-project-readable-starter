@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import uuid from "js-uuid";
 import { Button, Col, Form, FormControl, ControlLabel, FormGroup } from 'react-bootstrap';
 import { newComment } from '../actions/Comments';
+import { incrementCommentCount } from '../actions/Posts';
 
 class AddComment extends Component {
   static propTypes = {
@@ -43,7 +44,7 @@ class AddComment extends Component {
 
   handleFormChange(event) {
     const { id, value } = event.target;
-    let formData = this.state.formData;
+    let { formData } = this.state;
     formData[id] = value;
 
     this.setState((state) => {
@@ -58,8 +59,7 @@ class AddComment extends Component {
 
   handleFormSubmit() {
     const { parentId } = this.props;
-    const formData = this.state.formData;
-    let validations = this.state.validations;
+    const { formData, validations } = this.state;
     let formValid = true;
 
     for (let key in formData) {
@@ -80,7 +80,23 @@ class AddComment extends Component {
         parentId,
         timestamp: Date.now()
       });
+      
+      this.props.incrementCommentCount(parentId);
+      this.resetState();
     };
+  };
+
+  resetState = () => {
+    this.setState({
+      formData: {
+        author: 'anonymous',
+        body: ''
+      },
+      validations: {
+        author: null,
+        body: null
+      }
+    });
   };
 
   render() {
@@ -115,14 +131,11 @@ class AddComment extends Component {
   }
 };
 
-function mapStateToProps() {
-  return {};
-};
-
 function mapDispatchToProps(dispatch) {
   return {
-    newComment: (comment) => dispatch(newComment(comment))
+    newComment: (comment) => dispatch(newComment(comment)),
+    incrementCommentCount: (postId) => dispatch(incrementCommentCount(postId))
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddComment);
+export default connect(null, mapDispatchToProps)(AddComment);

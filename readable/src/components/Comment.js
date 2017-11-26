@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Row, Col, Glyphicon } from 'react-bootstrap';
 import { incrementComment, decrementComment, removeComment, openEditCommentModal } from '../actions/Comments';
+import { decrementCommentCount } from '../actions/Posts';
 import { formatDate } from '../utils/FormatDate';
 import CommentModal from './CommentModal';
 
@@ -26,6 +27,7 @@ class Comment extends Component {
   
   removeComment = (comment) => {
     this.props.removeComment(comment);
+    this.props.decrementCommentCount(comment.parentId);
   }
 
   render() {
@@ -69,7 +71,8 @@ function mapDispatchToProps(dispatch) {
     incrementComment: (comment) => dispatch(incrementComment(comment)),
     decrementComment: (comment) => dispatch(decrementComment(comment)),
     openEditCommentModal: (comment) => dispatch(openEditCommentModal(comment)),
-    removeComment: (comment) => dispatch(removeComment(comment))
+    removeComment: (comment) => dispatch(removeComment(comment)),
+    decrementCommentCount: (postId) => dispatch(decrementCommentCount(postId))
   };
 };
 

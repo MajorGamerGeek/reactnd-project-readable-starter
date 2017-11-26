@@ -59,14 +59,9 @@ class Post extends Component {
 	};
 
 	getPostComments = (postId) => {
-		let { comments } = this.props;
-		let postComments = [];
-
-		if (Array.isArray(comments)) {
-			postComments = comments.filter((comment) => (comment.parentId === postId));
+		if (Array.isArray(this.props.comments)) {
+			return this.props.comments.filter((comment) => (comment.parentId === postId));
 		}
-
-		return postComments;
 	};
 
 	static propTypes = {
@@ -76,13 +71,23 @@ class Post extends Component {
 
 	render() {
 		const { postItem, posts, postDetails } = this.props;
-		let post = null;
 
-		if (postItem) {
-			post = postItem;
-		} else {
-			post = posts[0];
+		const post = (function () {
+			if (postItem) {
+				return postItem;
+			} else if (posts.length > 0) {
+				return posts[0];
+			}
+		})();
+
+		if (post) {
+			console.log('Post True');
 		}
+		else {
+			console.log('Post False');
+			console.log(post);
+		}
+		
 
 		return (
 			<div>
@@ -117,11 +122,6 @@ class Post extends Component {
 								<div>
 									<Glyphicon glyph="trash" className="pointer" onClick={event => this.removePost(event, post.id)} />
 								</div>
-								{postDetails && (
-									<div>
-										<Glyphicon glyph="plus" className="pointer" onClick={() => this.props.openModal({ parentId: post.id })} />
-									</div>
-								)}
 							</Col>
 						</Row>
 						{postDetails && (

@@ -61,8 +61,7 @@ class CommentModal extends Component {
   };
 
   handleFormSubmit() {
-    const formData = this.state.formData;
-    let validations = this.state.validations;
+    const { formData, validations } = this.state;
     let formValid = true;
 
     for (let key in formData) {
@@ -128,10 +127,6 @@ class CommentModal extends Component {
   }
 };
 
-function mapStateToProps() {
-  return {};
-};
-
 function mapDispatchToProps(dispatch) {
   return {
     updateComment: (comment) => dispatch(updateComment(comment)),
@@ -139,4 +134,4 @@ function mapDispatchToProps(dispatch) {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CommentModal);
+export default connect(null, mapDispatchToProps)(CommentModal);
