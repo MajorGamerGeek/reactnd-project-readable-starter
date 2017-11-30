@@ -5,10 +5,6 @@
   color: white;
 }
 
-.App-intro {
-  font-size: large;
-}
-
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
@@ -27,6 +23,10 @@
   margin-top: 10px;
   padding-top: 7px;
   padding-bottom: 7px;
+}
+
+.nopage-title {
+  font-size: 32px;
 }
 
 .form-title-label {

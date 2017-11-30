@@ -33,7 +33,7 @@ function posts(state = { posts: [] }, action) {
 		case GET_POST:
 			return {
 				...state,
-				posts: [post]
+				posts: [post].filter(post => post.deleted === false)
 			};
 		case GET_ALL_POSTS:
 			return {

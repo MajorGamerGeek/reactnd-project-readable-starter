@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import { Grid, Nav, NavItem } from 'react-bootstrap';
 import { fetchCategories } from '../actions/Categories';
-import NoPage from './NoPage';
 import Post from './Post';
 import Posts from './Posts';
 import PostModal from './PostModal';

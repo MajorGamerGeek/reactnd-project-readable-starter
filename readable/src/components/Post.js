@@ -7,6 +7,7 @@ import { openModal } from '../actions/Modal';
 import { fetchPostComments } from '../actions/Comments';
 import AddComment from './AddComment';
 import Comment from './Comment';
+import NoPage from './NoPage';
 import { formatDate } from '../utils/FormatDate';
 
 class Post extends Component {
@@ -78,20 +79,13 @@ class Post extends Component {
 			} else if (posts.length > 0) {
 				return posts[0];
 			}
+
+			return undefined;
 		})();
-
-		if (post) {
-			console.log('Post True');
-		}
-		else {
-			console.log('Post False');
-			console.log(post);
-		}
 		
-
 		return (
 			<div>
-				{post && (
+				{post ? (
 					<div>
 						<Row className="post" onClick={() => this.showPostDetails(post.category, post.id)}>
 							<Col xs={12} sm={2} md={1} className="post-voteScore">
@@ -130,7 +124,11 @@ class Post extends Component {
 							</Row>
 						)}
 					</div>
-				)}
+				) : <Row>
+						<Col xs={12} className="post-NoPage vertical-align">
+							<NoPage/>
+						</Col>
+					</Row> }
 			</div>
 		)
 	}
